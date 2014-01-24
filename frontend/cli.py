@@ -12,10 +12,10 @@ from cmd import Cmd
 
 WELCOME_MESSAGE = \
 	"\nWelcome to Blue Book!\n" + \
-	"Type \"help\" to view available command options.\n"
+	"Type \"options\" to view available command options.\n"
 
 OPTIONS_MESSAGE = \
-	"VALID KEYWORDS:\n" + \
+	"VALID COMMANDS:\n" + \
 	"add\n" + \
 	"edit\n" + \
 	"delete\n" + \
@@ -25,6 +25,7 @@ OPTIONS_MESSAGE = \
 	"help\n\n" + \
 	\
 	"VALID FLAGS (used with keywords edit, delete, display):\n" + \
+	"(all flags must be followed by a single argument)\n" + \
 	"-fn (first name)\n" + \
 	"-ln (last name)\n" + \
 	"-a (address)\n" + \
@@ -33,11 +34,22 @@ OPTIONS_MESSAGE = \
 	"-z (ZIP Code)\n" + \
 	"-e (email)\n"
 
+CONTACT_FIELDS = [
+	('fname', 'First Name'),
+	('lname', 'Last Name'),
+	('address', 'Address'),
+	('city', 'City'),
+	('state', 'State'),
+	('zip', 'ZIP Code'),
+	('phone', 'Phone Number'),
+	('email', 'Email')
+]
+
 
 class CommandLineInterface(Cmd):
 
 	"""
-	VALID KEYWORDS:
+	VALID COMMANDS:
 	add
 	edit
 	delete
@@ -50,6 +62,7 @@ class CommandLineInterface(Cmd):
 	export
 
 	VALID FLAGS (used with keywords edit, delete, display):
+	(all flags must be followed by a single argument)
 	-fn (first name)
 	-ln (last name)
 	-a (address)
@@ -61,14 +74,57 @@ class CommandLineInterface(Cmd):
 	"""
 
 	intro = WELCOME_MESSAGE
+	prompt = "> "
 
-	options = ("add", "edit", "delete", "display", "quit", "options")
+	options = ("add", "edit", "delete", "display", "quit", "options", "help")
 	flags = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
+
+
+	def do_add(self, line):
+		"""
+		Add a new contact to the Address Book.
+		"""
+		#***TODO, make a new contact object
+
+		for field in CONTACT_FIELDS:
+			
+			#***TODO, assign raw input to proper field of contact
+			#***TODO, Validate input as correctly formatted
+			print raw_input("{0}: ".format(field[1]))
+
+		#*** TODO, add new contact to Address Book
+		#***TODO, print "Your entry was successfully added."
+		print "TODO"
+
+
+	def do_edit(self, line):
+		"""
+		Edit an existing contact in the Address Book.
+		"""
+		print "TODO"
+
+
+	def do_delete(self, line):
+		"""
+		Deletes a contact from the Address Book.
+		Or if more than one contact meets the user's specification, presents a list of said contacts.
+		If no contacts meet the user's specification, then does nothing.
+		*User can only delete one contact at a time
+		"""
+		print "TODO"
+
+
+	def do_display(self, line):
+		"""
+		If no flags are given, displays all contacts in the Address Book.
+		If flags are present, then displays only contacts that meet all of the specifications given by flags.
+		"""
+		print "TODO"
 
 
 	def do_options(self, line):
 		"""
-		Displays the available keyword commands used by the applet.
+		Displays the available keyword commands and flags used by the applet.
 		"""
 		print OPTIONS_MESSAGE
 
@@ -76,8 +132,15 @@ class CommandLineInterface(Cmd):
 		"""
 		quit the applet
 		"""
-		print "\n"
+		print ""
 		sys.exit()
+
+	def default(self, line):
+		"""
+		Method called on an input line when the command prefix is not recognized.
+		"""
+		if line != "":
+			print "*** Invalid command.  Type \"options\" to view available command options."
 
 
 
