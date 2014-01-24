@@ -93,6 +93,7 @@ class CommandLineInterface(Cmd):
 	display
 	quit
 	options
+	help
 
 	TODO: 
 	import
@@ -242,4 +243,3 @@ class CommandLineInterface(Cmd):
 if __name__ == "__main__":
 	command = CommandLineInterface()
 	command.cmdloop()
-
