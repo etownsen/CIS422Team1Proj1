@@ -10,7 +10,7 @@ class Contact:
     
     """A class representing a single entry in the address book."""
 
-    def __init__(self, fname, lname, address, city, state, zipcode, phone, email):
+    def __init__(self, fname='', lname='', address='', city='', state='', zipcode='', phone='', email=''):
         """Construct a Contact object which is an entry in the address book"""
         self.fname = fname
         self.lname = lname
