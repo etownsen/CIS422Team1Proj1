@@ -173,6 +173,7 @@ class CommandLineInterface(Cmd):
 			lists.append(self.addressbook.search_by_attribute(field_arg[0], field_arg[1]))
 
 		# Intersect all resulting lists from field queries
+		# This is a list of tuples (index, contact)
 		search_results = list(set(lists[0]).intersection(*lists[1:]))
 
 		# if more than one such contact, display list of said contacts
@@ -240,7 +241,7 @@ class CommandLineInterface(Cmd):
 				print result[1]
 
 		elif len(search_results) == 1:
-			contact = search_results[0]
+			contact = search_results[0] #tuple (index, contact)
 			print contact[1]
 			yes_delete = raw_input("Is this the entry you want to delete? (y/n): ")
 			if yes_delete in ('yes', 'y'):
@@ -267,7 +268,8 @@ class CommandLineInterface(Cmd):
 			print BAD_FLAGS_MESSAGE
 			return
 
-		# if no flags, arguments
+		# if no flags, arguments: 
+		# Print entire address book
 		if line == '':
 			if self.addressbook.total == 0:
 				print "The addressbook is empty"
