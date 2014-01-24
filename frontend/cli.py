@@ -47,7 +47,6 @@ CONTACT_FIELDS = [
 
 
 class CommandLineInterface(Cmd):
-
 	"""
 	VALID COMMANDS:
 	add
@@ -101,6 +100,17 @@ class CommandLineInterface(Cmd):
 		"""
 		Edit an existing contact in the Address Book.
 		"""
+
+		#***TODO, isolate flags, arguments
+		#***TODO, search address book for specified contact
+		#***TODO, 
+		for field in CONTACT_FIELDS:
+			default = "Jackmans"
+			user_input = raw_input("{0}: {1}".format(field[1], default) + chr(8)*len(default))
+			# NOTE: 8 is the ASCII value of backspace
+			if not user_input:
+				user_input = default
+
 		print "TODO"
 
 
@@ -142,7 +152,13 @@ class CommandLineInterface(Cmd):
 		if line != "":
 			print "*** Invalid command.  Type \"options\" to view available command options."
 
-
+	def emptyline(self):
+		"""
+		Method called when an empty line is entered in response to the prompt.
+		If this method is not overridden, it repeats the last nonempty command entered.
+		"""
+		pass
+ 
 
 if __name__ == "__main__":
 	command = CommandLineInterface()
