@@ -31,10 +31,14 @@ class AddressBook:
     
     """Address Book class."""
     
-    def __init__(self):
+    def __init__(self, contacts=None):
         """Construct an Address Book object."""
-        self.contacts = []
-        self.total = 0
+        if contacts is None:
+            self.contacts = []
+            self.total = 0
+        else:
+            self.contacts = contacts
+            self.total = len(contacts)
     
     def add(self, entry):
         """Add an entry to the address book."""
@@ -46,7 +50,7 @@ class AddressBook:
             self.total += 1
     
     def delete(self, index):
-        """Remove an entry from the address box given its index."""
+        """Remove an entry from the address book given its index."""
         try:
             del self.contacts[index]
             self.total -= 1
@@ -63,6 +67,15 @@ class AddressBook:
             if getattr(entry, 'fname') == fname:
                 result.append((index, entry))
         return result
+    
+
+    def search_by_attribute(self, attribute, value):
+        """Search by a given attribute and its value."""
+        result = []
+        for index, entry in enumerate(self.contacts):
+            if getattr(entry, attribute) == value:
+                result.append((index, entry))
+        return result
                 
     def __str__(self):
         """Return a string representation of the whole address book."""
@@ -74,11 +87,11 @@ def main():
     c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
     b2 = Contact('bbb', 'BBB', '20 b st', 'Eugene', 'OR', '97402', '541', 'b@b.com')
     arr = [a, b, c, b2]
-    ab = AddressBook() 
+    ab = AddressBook(arr) 
     # ab.add(a)
     # ab.add(b)
     # ab.add(c)
-    ab.add(arr)
+    #ab.add(arr)
     print ab
 
 if __name__ == "__main__": main()
