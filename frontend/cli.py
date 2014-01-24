@@ -12,20 +12,20 @@ from cmd import Cmd
 
 WELCOME_MESSAGE = \
 	"\nWelcome to Blue Book!\n" + \
-	"Type \"options\" to view available command options.\n"
+	"Enter \"options\" to view available command options.\n"
 
 OPTIONS_MESSAGE = \
 	"VALID COMMANDS:\n" + \
 	"add\n" + \
-	"edit\n" + \
-	"delete\n" + \
-	"display\n" + \
+	"edit (flags required to narrow search)\n" + \
+	"delete (flags required to narrow search)\n" + \
+	"display (flags optional to narrow search)\n" + \
 	"quit\n" + \
 	"options\n" + \
 	"help\n\n" + \
 	\
-	"VALID FLAGS (used with keywords edit, delete, display):\n" + \
-	"(all flags must be followed by a single argument)\n" + \
+	"VALID FLAGS (used with commands edit, delete, display):\n" + \
+	"(each and every flags must be followed by a single argument)\n" + \
 	"-fn (first name)\n" + \
 	"-ln (last name)\n" + \
 	"-a (address)\n" + \
@@ -33,6 +33,18 @@ OPTIONS_MESSAGE = \
 	"-s (state)\n" + \
 	"-z (ZIP Code)\n" + \
 	"-e (email)\n"
+
+EDIT_AND_DELETE_NEED_ARGS = \
+	"***This command requires flags and corresponding arguments.\n" + \
+	"***Enter \"options\" to view available command/flag options.\n"
+
+BAD_FLAGS_MESSAGE = \
+	"***There's an issue with your flags and/or their arguments.\n" + \
+	"***Make sure you are using valid flags and each flag has a valid argument.\n" + \
+	"***Enter \"options\" to view available command/flag options.\n"
+
+VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help")
+VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
 	('fname', 'First Name'),
@@ -44,6 +56,32 @@ CONTACT_FIELDS = [
 	('phone', 'Phone Number'),
 	('email', 'Email')
 ]
+
+def even_num_words(line):
+	"""
+	returns true if 'line' consists of an even number of white-spaced even_num_words
+	returns false otherwise
+	"""
+	return len(str.split(line))%2 == 0
+
+def parse_line_to_flags_args(line):
+	"""
+	Takes 'line' and splits it into pairs of tokens, stored as a list of tuples of strings.
+	Then validates that flags and arguments are properly formatted.
+	"""
+	split_line = str.split(line)
+
+	line_tuples = [(split_line[2*i].strip('\"'), split_line[2*i+1].strip('\"')) 
+		for i in range(len(split_line)/2)]
+
+	for (flag, arg) in line_tuples:
+		if flag not in VALID_FLAGS:
+			print BAD_FLAGS_MESSAGE
+			return
+
+		print "{0}::{1}".format(flag,arg)
+
+	return line_tuples
 
 
 class CommandLineInterface(Cmd):
@@ -75,9 +113,6 @@ class CommandLineInterface(Cmd):
 	intro = WELCOME_MESSAGE
 	prompt = "> "
 
-	options = ("add", "edit", "delete", "display", "quit", "options", "help")
-	flags = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
-
 
 	def do_add(self, line):
 		"""
@@ -100,12 +135,26 @@ class CommandLineInterface(Cmd):
 		"""
 		Edit an existing contact in the Address Book.
 		"""
+		if line == "":
+			print EDIT_AND_DELETE_NEED_ARGS
+			return
 
-		#***TODO, isolate flags, arguments
+		# There should be a one-to-one correspondence between flags and arguments
+		if not even_num_words(line):
+			print BAD_FLAGS_MESSAGE
+			return
+
+		flag_args = parse_line_to_flags_args(line)
+
 		#***TODO, search address book for specified contact
+
+		# if more than one such contact, display list of said contacts
+		# if exacly one such contact, that is the one we want
+		default = "Jackmans"
+		# if no such contact, inform user
+
 		#***TODO, 
 		for field in CONTACT_FIELDS:
-			default = "Jackmans"
 			user_input = raw_input("{0}: {1}".format(field[1], default) + chr(8)*len(default))
 			# NOTE: 8 is the ASCII value of backspace
 			if not user_input:
@@ -121,6 +170,24 @@ class CommandLineInterface(Cmd):
 		If no contacts meet the user's specification, then does nothing.
 		*User can only delete one contact at a time
 		"""
+		if line == "":
+			print EDIT_AND_DELETE_NEED_ARGS
+			return
+
+		# There should be a one-to-one correspondence between flags and arguments
+		if not even_num_words(line):
+			print BAD_FLAGS_MESSAGE
+			return
+
+		flag_args = parse_line_to_flags_args(line)
+
+		#***TODO, search address book for specified contact
+
+		# if more than one such contact, display list of said contacts
+		# if exacly one such contact, that is the one we want
+			#***TODO, remove said 
+		# if no such contact, inform user
+
 		print "TODO"
 
 
@@ -129,6 +196,18 @@ class CommandLineInterface(Cmd):
 		If no flags are given, displays all contacts in the Address Book.
 		If flags are present, then displays only contacts that meet all of the specifications given by flags.
 		"""
+
+		# There should be a one-to-one correspondence between flags and arguments
+		if not even_num_words(line):
+			print BAD_FLAGS_MESSAGE
+			return
+
+		flag_args = parse_line_to_flags_args(line)
+
+		#***TODO, search address book for specified contact
+
+		# Print list of found contacts
+
 		print "TODO"
 
 
