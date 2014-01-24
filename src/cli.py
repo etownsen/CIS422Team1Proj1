@@ -56,7 +56,7 @@ CONTACT_FIELDS = [
 	('address', 'Address', '-a'),
 	('city', 'City', '-c'),
 	('state', 'State', '-s'),
-	('zip', 'ZIP Code', '-z'),
+	('zipcode', 'ZIP Code', '-z'),
 	('phone', 'Phone Number', '-p'),
 	('email', 'Email', 'e')
 ]
@@ -170,7 +170,7 @@ class CommandLineInterface(Cmd):
 		# Search address book for specified contact
 		lists = [] # a list of lists returned by search, each list the result of a search on one field
 		for field_arg in field_args:
-			lists.append(self.addressbook.search_by_attribute(field_arg[0], field_arg[1]))
+			lists.append(self.addressbook.search(field_arg[0], field_arg[1]))
 
 		# Intersect all resulting lists from field queries
 		# This is a list of tuples (index, contact)
@@ -225,7 +225,7 @@ class CommandLineInterface(Cmd):
 		# Search address book for specified contact
 		lists = [] # a list of lists returned by search, each list the result of a search on one field
 		for field_arg in field_args:
-			lists.append(self.addressbook.search_by_attribute(field_arg[0], field_arg[1]))
+			lists.append(self.addressbook.search(field_arg[0], field_arg[1]))
 
 		# Intersect all resulting lists from field queries
 		# This is a list of tuples (index, contact)
@@ -284,7 +284,7 @@ class CommandLineInterface(Cmd):
 			# Search address book for specified contacts
 			lists = [] # a list of lists returned by search, each list the result of a search on one field
 			for field_arg in field_args:
-				lists.append(self.addressbook.search_by_attribute(field_arg[0], field_arg[1]))
+				lists.append(self.addressbook.search(field_arg[0], field_arg[1]))
 
 			# Intersect all resulting lists from field queries
 			# This is a list of tuples (index, contact)
