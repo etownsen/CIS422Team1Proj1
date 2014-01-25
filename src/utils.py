@@ -6,9 +6,8 @@
 """
 
 import cPickle as pickle
-# from addressbook import AddressBook
 
-def open_ab(file):
+def open_ab(file_name):
     """Open an address book file.
     
     Args:
@@ -21,12 +20,12 @@ def open_ab(file):
       IOError: An error when file is not found.
     """
     ab = None
-    with open(file, 'rb') as input:
+    with open(file_name, 'rb') as input:
         ab = pickle.load(input)
     return ab
     
-def save_ab(ab, file):
-    """Save an address book to file.
+def save_ab(ab, file_name):
+    """Save an address book to a file.
     
     Args:
       ab: The address book to be saved.
@@ -35,6 +34,6 @@ def save_ab(ab, file):
     Raises:
       IOError: An error when file is not found.
     """
-    with open(file, 'wb') as output:
+    with open(file_name, 'wb') as output:
         pickle.dump(ab, output, pickle.HIGHEST_PROTOCOL)
-        
+    
