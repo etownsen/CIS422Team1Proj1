@@ -6,7 +6,7 @@
 """
 
 import cPickle as pickle
-from addressbook import AddressBook
+# from addressbook import AddressBook
 
 def open_ab(file):
     """Open an address book file.
