@@ -113,7 +113,7 @@ class AddressBook:
             if type(entry) is tuple:
                 index = entry[0]
                 entry = entry[1]
-            if getattr(entry, attribute) == value:
+            if getattr(entry, attribute).lower() == value.lower():
                 result.append((index, entry))
         return result               
     
