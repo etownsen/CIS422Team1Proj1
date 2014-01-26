@@ -58,7 +58,7 @@ CONTACT_FIELDS = [
 	('state', 'State', '-s'),
 	('zipcode', 'ZIP Code', '-z'),
 	('phone', 'Phone Number', '-p'),
-	('email', 'Email', 'e')
+	('email', 'Email', '-e')
 ]
 
 REQUIRED_FIELDS = [ "lname" ]
@@ -134,6 +134,7 @@ class CommandLineInterface(Cmd):
 		Cmd.__init__(self, *args, **kwargs)
 
 	def do_prepop_book(self, line):
+		# TODO this is for testing, should be removed for final product
 		a = Contact('aaa', 'AAA', '10 a st', 'Eugene', 'OR', '97401', '541', 'a@a.com')
 		b = Contact('bbb', 'BBB', '20 b st', 'Eugene', 'OR', '97402', '541', 'b@b.com')
 		c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
@@ -165,7 +166,7 @@ class CommandLineInterface(Cmd):
 	def do_edit(self, line):
 		"""
 		Edit an existing contact in the Address Book.
-		It actually deletes the "edited " contact and add a new contact with the changed (or not) fields
+		It actually deletes the "edited " contact and adds a new contact with the changed (or not) fields
 		"""
 		if line == "":
 			print EDIT_AND_DELETE_NEED_ARGS
