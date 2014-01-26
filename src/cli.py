@@ -1,5 +1,5 @@
 """
-	Command-Line Interface module
+	Command-Line Interface module.
 	For simple Address Book applet - Project 1 - CIS 422, W'14, University of Oregon
 
 	:author: Kevin Beick
