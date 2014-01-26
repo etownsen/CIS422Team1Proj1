@@ -1,23 +1,17 @@
 """
-    Utilities Module
-    For simple Address Book applet - Project 1 - CIS 422, W'14, University of Oregon
+    Utilities Module.
+    For simple Address Book applet - Project 1 - 
+    CIS 422, W'14, University of Oregon.
 
-    :author: Abdulrahman Alkhelaifi
+    :author: Abdulrahman Alkhelaifi <abdul@cs.uoregon.edu>
 """
 
 import cPickle as pickle
 
 def open_ab(file_name):
-    """Open an address book file.
-    
-    Args:
-      file: The file name of the address book.
-    
-    Returns:
-      An address book object.
-      
-    Raises:
-      IOError: An error when file is not found.
+    """
+    Open an address book file, returning an AddressBook object.
+    Raises IOError when file is not found.
     """
     ab = None
     with open(file_name, 'rb') as input:
@@ -25,14 +19,8 @@ def open_ab(file_name):
     return ab
     
 def save_ab(ab, file_name):
-    """Save an address book to a file.
-    
-    Args:
-      ab: The address book to be saved.
-      file: The file name of the address book.
-      
-    Raises:
-      IOError: An error when file is not found.
+    """
+    Save an AddressBook object to a file.
     """
     with open(file_name, 'wb') as output:
         pickle.dump(ab, output, pickle.HIGHEST_PROTOCOL)

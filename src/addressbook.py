@@ -1,24 +1,24 @@
 """
-    Address Book Module
-    For simple Address Book applet - Project 1 - CIS 422, W'14, University of Oregon
+    Address Book Module.
+    For simple Address Book applet - Project 1 - 
+    CIS 422, W'14, University of Oregon.
 
-    :author: Abdulrahman Alkhelaifi
+    :author: Abdulrahman Alkhelaifi <abdul@cs.uoregon.edu>
 """
 
 import sys
 import utils
+import csv
 from operator import itemgetter, attrgetter
 
 class Contact:
-    
     """
-    A class representing a single entry in the address book.
+    A class representing a single entry in the address book.  
     """
-
     def __init__(self, fname='', lname='', address='', city='', state='', 
                  zipcode='', phone='', email=''):
         """
-        Construct a Contact object which is an entry in the address book.
+        Initialize a Contact object which is an entry in the address book.
         """
         self.fname = fname
         self.lname = lname
@@ -45,15 +45,15 @@ class Contact:
                             self.lname.upper(), self.address.upper(),
                             self.city.upper(), self.state.upper(), self.zipcode)
 
-class AddressBook:
-    
+class AddressBook:  
     """
-    Address Book class.
+    A simple personal address book. Holds a list of Contact objects
+    and provides multiple functionalities to handle them.
     """
-    
     def __init__(self, contacts=[], name='bluebook.pk'):
         """
-        Construct an Address Book object.
+        Initialize an AddressBook object with an empty list
+        or given a list of contacts.
         """
         self.name = name
         self.contacts = contacts
@@ -74,7 +74,8 @@ class AddressBook:
     
     def add(self, entry):
         """
-        Add an entry to the address book.
+        Add an entry to the address book given a single Contact
+        or a list of Contacts.
         """
         if type(entry) is list:
             self.contacts += entry
@@ -85,7 +86,8 @@ class AddressBook:
     
     def delete(self, index):
         """
-        Remove an entry from the address book given its index.
+        Remove an entry from the address book given its index. The index
+        is returned by the search method.
         """
         try:
             del self.contacts[index]
@@ -95,7 +97,9 @@ class AddressBook:
     
     def sort(self, attributes=['lname'], desc=False):
         """
-        Sort the address book by the given attributes.
+        Sort the address book by the given list of attributes. The first
+        attribute is used and ties are broken using the next attributes in 
+        the list. 
         """
         try:
             self.contacts.sort(key=attrgetter(*attributes), reverse=desc)
@@ -119,26 +123,46 @@ class AddressBook:
                 result.append((index, entry))
         return result               
     
-    def import_contacts(self, file):
-        """Import addresses."""
-        pass
+    def import_contacts(self, file_name):
+        """NOT FINISHED."""
+        with open(file_name, 'rb') as tsvfile:
+            result = csv.reader(tsvfile, delimiter='\t', quotechar='|')
+            for line in result:
+                last = line[0].split()
+                second = ""
+                recipient = line[2].split()
+                fname = recipient[0]
+                lname = recipient[1]
+                address = line[1]
+                city = last[0]
+                state = last[1]
+                zipcode = last[2]
+                phone = line[3]
+                entry = Contact(fname, lname, address, city, state, zipcode, phone)
+                self.add(entry)
     
-    def export_contacts(self, file):
-        """Export address book."""
-        res = ""
+    def export_contacts(self, file_name):
+        """NOT FINISHED."""
+        res = []
         for entry in self.contacts:
-            last = "{0} {1} {2}".format(entry.city, entry.state, entry.zipcode)
-            delivery = "{0}".format(entry.address)
-            res += "{0}\t{1}\n" .format(last.upper(), delivery.upper())
-        print res
-            
-        
+            last = ' '.join([entry.city, entry.state, entry.zipcode]).upper()
+            delivery = entry.address.upper()
+            second = ""
+            recipient = ' '.join([entry.fname, entry.lname]).upper()
+            phone = entry.phone
+            line = '\t'.join([last, delivery, recipient, phone])
+            res.append(line)
+        res = '\n'.join(res)
+        with open(file_name, 'wb') as f:
+            f.write(res)
+
+                  
 def main():   
     a = Contact('aaa', 'AAA', '10 a st', 'Eugene', 'OR', '97401', '541', 'a@a.com')
     b = Contact('bbb', 'BBB', '20 b st', 'Eugene', 'OR', '97402', '541', 'b@b.com')
     c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
     b2 = Contact('bbb', 'BBB', '20 b st', 'Eugene', 'OR', '97404', '541', 'b@b.com')
-    print a.print_mailing()
+    #print a.print_mailing()
     arr = [b, c, b2, a]
     ab = AddressBook(arr) 
     # ab.add(a)
@@ -151,11 +175,13 @@ def main():
     #print res
     #print res2
     ab.sort(['lname', 'zipcode'])
-    utils.save_ab(ab, ab.name)
-    ab2 = utils.open_ab('bluebook.pk')
+    #utils.save_ab(ab, ab.name)
+    #ab2 = utils.open_ab('bluebook.pk')
     #print ab2
-    ab.export_contacts('f')
-    print ab
+    #ab2.export_contacts('f.tsv')
+    #ab3 = AddressBook()
+    #ab3.import_contacts('f.tsv')
+    #print ab3
 
     
 if __name__ == "__main__": main()
