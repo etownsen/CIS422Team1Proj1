@@ -36,8 +36,9 @@ def validate_address(address):
 def validate_city(city):
     """
     Pretty much the same as the names, but with spaces and numbers.
+    City name should start with letters.
     """
-    valid = re.match('^[A-Za-z0-9 -]+$', city)
+    valid = re.match('^[A-Za-z]+[A-Za-z0-9 -]+$', city)
     if not valid:
         #print "Invalid city"
         return False
@@ -84,7 +85,7 @@ def main():
     print
     print 'city T: eugene', validate_city('eugene')
     print 'city T: new york', validate_city('new york')
-    print 'cirty F: 111', validate_city('111')
+    print 'city F: 111', validate_city('111')
     print
     print 'state T: Oregon', validate_state('Oregon')
     print 'state T: New Mexico', validate_state('New Mexico')
