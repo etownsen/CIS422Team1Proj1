@@ -1,8 +1,11 @@
 """
 	Command-Line Interface module.
-	For simple Address Book applet - Project 1 - CIS 422, W'14, University of Oregon
+	
+	
+	For simple Address Book applet - Project 1 - 
+	CIS 422, W'14, University of Oregon
 
-	:author: Kevin Beick
+	:author: Kevin Beick <kbeick@uoregon.edu>
 """
 
 import sys
@@ -242,7 +245,7 @@ class CommandLineInterface(Cmd):
 		Deletes a contact from the Address Book.
 		Or if more than one contact meets the user's specification, presents a list of said contacts.
 		If no contacts meet the user's specification, then does nothing.
-		*User can only delete one contact at a time
+		**User can only delete one contact at a time.**
 		"""
 		if line == "":
 			print EDIT_AND_DELETE_NEED_ARGS

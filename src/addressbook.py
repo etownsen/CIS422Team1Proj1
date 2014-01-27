@@ -1,5 +1,7 @@
 """
     Address Book Module.
+    
+    
     For simple Address Book applet - Project 1 - 
     CIS 422, W'14, University of Oregon.
 
@@ -44,9 +46,9 @@ class Contact:
         """
         Return a string representation in the standard mailing label format.
         
-        NAME (FIRST LAST) (e.g., ABC MOVERS)
-        DELIVERY (ADDRESS SECOND) (e.g., 1500 E MAIN AVE STE 201)
-        LAST (CITY STATE ZIP) (e.g., SPRINGFIELD VA 22162-1010)
+        | NAME (FIRST LAST) (e.g., ABC MOVERS)
+        | DELIVERY (ADDRESS SECOND) (e.g., 1500 E MAIN AVE STE 201)
+        | LAST (CITY STATE ZIP) (e.g., SPRINGFIELD VA 22162-1010)
         """
         info = self.get_filtered_info()
         del info['phone']
@@ -58,13 +60,14 @@ class Contact:
         """
         Return a dictionary of filtered information for the Contact object.
         Useful when Contact has empty fields.
-        name: first last
-        delivery: address second
-        last: city state zipcode
-        phone: phone
-        email: email
-        address: address
-        second: second
+        
+        | name: first last
+        | delivery: address second
+        | last: city state zipcode
+        | phone: phone
+        | email: email
+        | address: address
+        | second: second
         """
         name = ' '.join([self.fname, self.lname])
         address = ' '.join([self.address, self.address2])

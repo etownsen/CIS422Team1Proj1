@@ -1,5 +1,7 @@
 """
     Validate Module.
+    
+    
     For simple Address Book applet - Project 1 - 
     CIS 422, W'14, University of Oregon.
 
@@ -22,7 +24,7 @@ def validate_name(name):
 
 def validate_address(address):
     """
-    This matches everything before, with the addition of numbers, dashes,
+    This matches everything as name, with the addition of numbers, dashes,
     colons, periods, pound signs, and spaces.
     """
     valid = re.match('^[0-9]+[0-9A-Za-z \.#:-]+$', address)
@@ -63,7 +65,7 @@ def validate_zip(zipcode):
     
 def validate_email(email):
     """
-    Matches an email address of the form a@b.c
+    Matches an email address.
     """
     valid = re.match('[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}', email)
     if not valid:
