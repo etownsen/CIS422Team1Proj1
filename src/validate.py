@@ -1,8 +1,8 @@
 """
     Validate Module.
-    
-    
-    For simple Address Book applet - Project 1 - 
+
+
+    For simple Address Book applet - Project 1 -
     CIS 422, W'14, University of Oregon.
 
     :author: Abdulrahman Alkhelaifi <abdul@cs.uoregon.edu>
@@ -13,12 +13,12 @@ import re
 
 def validate_name(name):
     """
-    This will match strings of at least 1 character consisting of the upper 
+    This will match strings of at least 1 character consisting of the upper
     and lower case alphabet as well as hyphens.
     """
     valid = re.match('^[A-Za-z-]+$', name)
     if not valid:
-        #print "Invalid name"
+        # print "Invalid name"
         return False
     return True
 
@@ -27,9 +27,9 @@ def validate_address(address):
     This matches everything as name, with the addition of numbers, dashes,
     colons, periods, pound signs, and spaces.
     """
-    valid = re.match('^[0-9]+[0-9A-Za-z \.#:-]+$', address)
+    valid = re.match(r'^[0-9]+[0-9A-Za-z \.#:-]+$', address)
     if not valid:
-        #print "Invalid name"
+        # print "Invalid name"
         return False
     return True
 
@@ -40,7 +40,7 @@ def validate_city(city):
     """
     valid = re.match('^[A-Za-z]+[A-Za-z0-9 -]+$', city)
     if not valid:
-        #print "Invalid city"
+        # print "Invalid city"
         return False
     return True
 
@@ -50,31 +50,34 @@ def validate_state(state):
     """
     valid = re.match('^[A-Za-z ]+$', state)
     if not valid:
-        #print "Invalid state"
+        # print "Invalid state"
         return False
     return True
-    
+
 def validate_zip(zipcode):
     """
     Matches either 5 (97403) or 9 (97403-1234) zip codes.
     """
-    valid = re.match('^[0-9]{5}(-[0-9]{4})?$', zipcode)   
+    valid = re.match('^[0-9]{5}(-[0-9]{4})?$', zipcode)
     if not valid:
-        #print "Invalid zipcode"
+        # print "Invalid zipcode"
         return False
     return True
-    
+
 def validate_email(email):
     """
     Matches an email address.
     """
-    valid = re.match('[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}', email)
+    valid = re.match(r'[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}', email)
     if not valid:
-        #print "Invalid email"
+        # print "Invalid email"
         return False
     return True
-        
+
 def main():
+    """
+    Testing...
+    """
     print 'name T: evan', validate_name('evan')
     print 'name T: ev-an', validate_name('ev-an')
     print 'name F: e123', validate_name('e123')
@@ -100,6 +103,11 @@ def main():
     print 'zip F: 00000-11111', validate_zip('00000-11111')
     print
     print 'email T: a@b.com', validate_email('a@b.com')
-    print 'email F: a@b', validate_email('a@b') 
-    
-if __name__ == "__main__": main()
+    print 'email F: a@b', validate_email('a@b')
+    print 'email F: a@b.', validate_email('a@b.')
+    print 'email F: a@.c', validate_email('a@.c')
+    print 'email F: @b.c', validate_email('@b.c')
+    print 'email F: b.c', validate_email('b.c')
+
+if __name__ == "__main__":
+    main()
