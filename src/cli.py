@@ -60,7 +60,7 @@ MALFORMED_DATA_MESSAGE = \
 	"*** The contact info you provided does not conform to standards this applet is familiar with.\n" + \
 	"*** Please try again."
 
-VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help", "open", "save", "save_as", "sort", "display_mail")
+VALID_OPTIONS = ("add", "edit", "delete", "display", "display_mail", "sort", "open", "save", "save_as", "options", "help", "quit")
 VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
@@ -113,10 +113,11 @@ class CommandLineInterface(Cmd):
 	edit
 	delete
 	display
+	display_mail
+	sort
 	open
 	save
 	save_as
-	sort
 	options
 	help
 	quit
@@ -146,9 +147,9 @@ class CommandLineInterface(Cmd):
 
 	def do_prepop_book(self, line):
 		# TODO this is for testing, should be removed for final product
-		a = Contact('aaa', 'AAA', '10 a st', 'Eugene', 'OR', '97401', '541', 'a@a.com')
-		b = Contact('bbb', 'BBB', '20 b st', 'Eugene', 'OR', '97402', '541', 'b@b.com')
-		c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
+		a = Contact('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'super@man.com')
+		b = Contact('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com')
+		c = Contact('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu')
 		self.addressbook.add([a, b, c])
 
 	def do_add(self, line):
@@ -242,7 +243,6 @@ class CommandLineInterface(Cmd):
 		else:
 			print "There were no contacts that met your specification. Please generalize your request."
 
-
 	def do_delete(self, line):
 		"""
 		Deletes a contact from the Address Book.
@@ -291,8 +291,6 @@ class CommandLineInterface(Cmd):
 		else:
 			print "There were no contacts that met your specification. Please generalize your request."
 
-
-
 	def do_display(self, line):
 		"""
 		If no flags are given, displays all contacts in the Address Book.
@@ -328,7 +326,6 @@ class CommandLineInterface(Cmd):
 				print "\n"
 			else:
 				print "There were no contacts that met your specification. Please generalize/check your request."
-
 
 	def do_display_mail(self, line):
 		"""
@@ -366,6 +363,49 @@ class CommandLineInterface(Cmd):
 				print "\n"
 			else:
 				print "There were no contacts that met your specification. Please generalize/check your request."
+
+	def do_open(self, line):
+		# CATCH ERRORS
+		pass
+
+	def do_save(self, line):
+		# CATCH ERRORS
+		pass
+		
+	def do_save_as(self, line):
+		# CATCH ERRORS
+		pass
+		
+	def do_sort(self, line):
+		"""
+        Sort the address book by the given attributes (flags). The first
+        attribute is used and ties are broken using the following attributes in
+        the list.
+        Defaults to sorting by last name.  Ties are broken by last name.
+		"""
+
+		# convert flags to list of attributes.
+		flags = line.split()
+		attrs = []
+
+		for flag in flags:
+			if flag not in VALID_FLAGS:
+				print "'{0}' is not a valid flag. Enter \"options\" to view available flag options.\n".format(flag)
+				return
+
+			for field in CONTACT_FIELDS:
+				if flag == field[2]:
+					attrs.append(field[0])
+
+		# Ties are broken by name
+		attrs.extend(['lname', 'fname'])
+
+		# Apply sort function
+		try:
+			self.addressbook.sort(attributes=attrs)
+			print "Address book is now sorted.\n"
+		except:
+			print "*** Encountered an error while trying to sort, please make sure your input is correct."
 
 
 	def do_options(self, line):
