@@ -143,6 +143,7 @@ class CommandLineInterface(Cmd):
 
 	def __init__(self, *args, **kwargs):
 		self.addressbook = AddressBook()
+		self.current_book_filename = ""
 		Cmd.__init__(self, *args, **kwargs)
 
 	def do_prepop_book(self, line):
@@ -281,7 +282,7 @@ class CommandLineInterface(Cmd):
 			print contact[1]
 			yes_delete = raw_input("Is this the entry you want to delete? (y/n): ")
 			if yes_delete in ('yes', 'y'):
-				yes_delete = raw_input("***Are you sure? (y/n): ")
+				yes_delete = raw_input("*** Are you sure? (y/n): ")
 				if yes_delete in ('yes', 'y'):
 					self.addressbook.delete(contact[0])
 					print "Contact deleted."
@@ -297,13 +298,14 @@ class CommandLineInterface(Cmd):
 		If flags are present, then displays only contacts that meet all of the specifications given by flags.
 		"""
 
+		if self.addressbook.total == 0:
+			print "The addressbook is empty."
+			return
+
 		# if no flags, arguments: 
 		# Print entire address book
 		if line == '':
-			if self.addressbook.total == 0:
-				print "The addressbook is empty"
-			else:
-				print "\n{0}".format(self.addressbook)
+			print "\n{0}".format(self.addressbook)
 
 		# else find subset of addressbook
 		else:
@@ -334,13 +336,14 @@ class CommandLineInterface(Cmd):
 		If flags are present, then displays only contacts that meet all of the specifications given by flags.
 		"""
 
+		if self.addressbook.total == 0:
+			print "The addressbook is empty."
+			return
+
 		# if no flags, arguments: 
 		# Print entire address book
 		if line == '':
-			if self.addressbook.total == 0:
-				print "The addressbook is empty"
-			else:
-				print "\n{0}".format(self.addressbook.print_all_mailing())
+			print "\n{0}".format(self.addressbook.print_all_mailing())
 
 		# else find subset of addressbook
 		else:
@@ -365,16 +368,70 @@ class CommandLineInterface(Cmd):
 				print "There were no contacts that met your specification. Please generalize/check your request."
 
 	def do_open(self, line):
-		# CATCH ERRORS
-		pass
+		"""
+		Open an address book from file.
+		"""
+
+		confirm = raw_input("Are you sure you want to open a new address book? Changes since your last save will be lost. ('open' / 'cancel'): ")
+		if confirm != 'open': return		
+
+		file_name = raw_input("Please give the name/path of the file containing the address book you want to open (or leave blank to cancel): ")
+
+		if file_name:
+			try:
+				self.addressbook = utils.open_ab(file_name)
+				self.current_book_filename = file_name
+				print "Now using address book from file '{0}'".format(file_name)
+			except:
+				print "*** Encountered an error while trying to open that file. Please make sure you provided a good file name."
 
 	def do_save(self, line):
-		# CATCH ERRORS
-		pass
-		
+
+		if self.current_book_filename == '': 
+			print "This seems to be a new address book."
+			return self.do_save_as(line)
+
+
+		file_name = self.current_book_filename
+
+		confirm = raw_input("Are you sure you want to overwrite the existing file '{0}'? (y/n): ".format(file_name))
+		if confirm in ['yes', 'y']:
+			try:
+				utils.save_ab(self.addressbook, file_name)
+				print "Successfully saved your address book to the file '{0}'".format(file_name)
+			except:
+				print "in save"
+				print "*** Encountered an error while trying to save. Sorry..."
+
+		else:
+			print "Cancelling save."
+			return
+
+
 	def do_save_as(self, line):
-		# CATCH ERRORS
-		pass
+		"""
+		Save an address book as an object to a file.
+		"""
+
+		file_name = raw_input("What do you want to call your file? (or leave blank to cancel): ")
+			# "WARNING, I can't tell if you're overwritting a file that already exists, so choose the name carefully: ")
+
+		if not file_name: return
+
+		try:
+			with open(file_name):
+				overwrite = raw_input("There already seems to be a file with that name. Do you want to overwrite that file? (y/n): ")
+		except IOError:
+			overwrite = 'yes'
+
+		if overwrite in ['yes', 'y']:
+			try:
+				utils.save_ab(self.addressbook, file_name)
+				self.current_book_filename = file_name
+				print "Successfully saved your address book to the file '{0}'".format(file_name)
+			except:
+				print "in save as"
+				print "*** Encountered an error while trying to save. Sorry..."
 		
 	def do_sort(self, line):
 		"""
