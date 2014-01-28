@@ -13,6 +13,7 @@ from cmd import Cmd
 
 from addressbook import Contact, AddressBook
 import utils
+import validate
 
 WELCOME_MESSAGE = \
 	"\nWelcome to Blue Book!\n" + \
@@ -73,6 +74,18 @@ CONTACT_FIELDS = [
 	('phone', 'Phone Number', '-p'),
 	('email', 'Email', '-e')
 ]
+
+# Maps fields to validation functions
+FIELD_VALIDATORS = {
+	'fname' : validate.validate_name,
+	'lname' : validate.validate_name,
+	'address' : validate.validate_address,
+	'city' : validate.validate_city,
+	'state' : validate.validate_state,
+	'zipcode' : validate.validate_zip,
+	'phone' : validate.validate_phone,
+	'email' : validate.validate_email,
+}
 
 REQUIRED_FIELDS = [ "lname" ]
 
@@ -161,13 +174,17 @@ class CommandLineInterface(Cmd):
 
 		print "* denotes a required field.\nPress ctrl-c to cancel."
 		for field in CONTACT_FIELDS:
+			valid = FIELD_VALIDATORS[field[0]]
 			try:
-				#***TODO, Validate input as correctly formatted
+				data = None
 				if field[0] in REQUIRED_FIELDS:
-					while getattr(new_contact, field[0], '')=='':
-						setattr(new_contact, field[0], raw_input("{0}: ".format(field[1])))
+					while getattr(new_contact, field[0], '')=='' or not valid(data):
+						data = raw_input("{0}: ".format(field[1]))
+						setattr(new_contact, field[0], data)
 				else:
-					setattr(new_contact, field[0], raw_input("{0}: ".format(field[1])))
+					while not valid(data):
+						data = raw_input("{0}: ".format(field[1]))
+						setattr(new_contact, field[0], data)
 			
 			except KeyboardInterrupt:
 				print "\nCancelling New Contact\n"
@@ -216,15 +233,18 @@ class CommandLineInterface(Cmd):
 			temp = Contact()
 
 			for field in CONTACT_FIELDS:
+				valid = FIELD_VALIDATORS[field[0]]
 				try:
+					new_data = None
 					old_data = getattr(contact[1], field[0], '')
-					user_input = raw_input("{0}: {1}".format(field[1], old_data) + chr(8)*len(old_data))
-					# NOTE: 8 is the ASCII value of backspace
-					if not user_input:
-						user_input = old_data
+					while not valid(new_data):
+						new_data = raw_input("{0}: {1}".format(field[1], old_data) + chr(8)*len(old_data))
+						# NOTE: 8 is the ASCII value of backspace
+						if not new_data:
+							new_data = old_data
 
 					# Update the temp Contact Info
-					setattr(temp, field[0], user_input)
+					setattr(temp, field[0], new_data)
 			
 				except KeyboardInterrupt:
 					print "\nCancelling Contact Edit, reverting to original.\n"
@@ -407,7 +427,6 @@ class CommandLineInterface(Cmd):
 			print "Cancelling save."
 			return
 
-
 	def do_save_as(self, line):
 		"""
 		Save an address book as an object to a file.
@@ -464,7 +483,6 @@ class CommandLineInterface(Cmd):
 		except:
 			print "*** Encountered an error while trying to sort, please make sure your input is correct."
 
-
 	def do_options(self, line):
 		"""
 		Displays the available keyword commands and flags used by the applet.
@@ -475,8 +493,11 @@ class CommandLineInterface(Cmd):
 		"""
 		quit the applet
 		"""
-		print ""
-		sys.exit()
+		confirm = raw_input("Are you sure you want to quit? Changes since your last save will be lost. ('quit' to quit; anything else will cancel): ")
+		if confirm != 'quit': 
+			return
+		else:
+			sys.exit()
 
 	def default(self, line):
 		"""
