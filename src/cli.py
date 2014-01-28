@@ -24,11 +24,16 @@ OPTIONS_MESSAGE = \
 	"edit (flags required to narrow search)\n" + \
 	"delete (flags required to narrow search)\n" + \
 	"display (flags optional to narrow search)\n" + \
-	"quit\n" + \
+	"display_mail (flags optional to narrow search)\n" + \
+	"sort (flags used to define sort criterion; defaults to -ln)\n" + \
+	"open\n" + \
+	"save\n" + \
+	"save_as\n" + \
 	"options\n" + \
-	"help\n\n" + \
-	\
-	"VALID FLAGS (used with commands edit, delete, display):\n" + \
+	"help\n" + \
+	"quit\n" + \
+	"\n" + \
+	"VALID FLAGS (used with commands edit, delete, display, sort):\n" + \
 	"NOTE all flags must be followed by a single argument in quotes (eg: -a \"123 Easy St\"; -fn \"Kevin\").\n" + \
 	"-fn (first name)\n" + \
 	"-ln (last name)\n" + \
@@ -39,19 +44,23 @@ OPTIONS_MESSAGE = \
 	"-e (email)\n"
 
 EDIT_AND_DELETE_NEED_ARGS = \
-	"***This command requires flags and corresponding arguments.\n" + \
-	"***Enter \"options\" to view available command/flag options.\n"
+	"*** This command requires flags and corresponding arguments.\n" + \
+	"*** Enter \"options\" to view available command/flag options.\n"
 
 NARROW_SEARCH_MESSAGE = \
 	"There are multiple contact that meet those specifications. Find the one you're interested in below\n" + \
 	"and add more flags to your command so we can uniquely identify the contact."
 
 BAD_FLAGS_MESSAGE = \
-	"***There's an issue with your flags and/or their arguments.\n" + \
-	"***Make sure you are using valid flags and each flag has a valid, quoted argument.\n" + \
-	"***Enter \"options\" to view available command/flag options.\n"
+	"*** There's an issue with your flags and/or their arguments.\n" + \
+	"*** Make sure you are using valid flags and each flag has a valid, quoted argument.\n" + \
+	"*** Enter \"options\" to view available command/flag options.\n"
 
-VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help", "open", "save", "save_as")
+MALFORMED_DATA_MESSAGE = \
+	"*** The contact info you provided does not conform to standards this applet is familiar with.\n" + \
+	"*** Please try again."
+
+VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help", "open", "save", "save_as", "sort", "display_mail")
 VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
@@ -107,6 +116,7 @@ class CommandLineInterface(Cmd):
 	open
 	save
 	save_as
+	sort
 	options
 	help
 	quit
@@ -115,7 +125,7 @@ class CommandLineInterface(Cmd):
 	import
 	export
 
-	VALID FLAGS (used with keywords edit, delete, display):
+	VALID FLAGS (used with keywords edit, delete, display, sort):
 	NOTE all flags must be followed by a single argument in quotes (eg: -a "123 Easy St"; -fn "Kevin").
 	-fn (first name)
 	-ln (last name)
@@ -295,7 +305,7 @@ class CommandLineInterface(Cmd):
 			if self.addressbook.total == 0:
 				print "The addressbook is empty"
 			else:
-				print self.addressbook
+				print "\n{0}".format(self.addressbook)
 
 		# else find subset of addressbook
 		else:
@@ -314,8 +324,46 @@ class CommandLineInterface(Cmd):
 
 			if len(search_results) > 0:
 				for result in search_results:
-					print "-------------------------"
-					print result[1]
+					print "\n{0}".format(result[1])
+				print "\n"
+			else:
+				print "There were no contacts that met your specification. Please generalize/check your request."
+
+
+	def do_display_mail(self, line):
+		"""
+		Same as 'display', but displays contact in mailing label format, as opposed to full contact.
+		If no flags are given, displays all contacts in the Address Book.
+		If flags are present, then displays only contacts that meet all of the specifications given by flags.
+		"""
+
+		# if no flags, arguments: 
+		# Print entire address book
+		if line == '':
+			if self.addressbook.total == 0:
+				print "The addressbook is empty"
+			else:
+				print "\n{0}".format(self.addressbook.print_all_mailing())
+
+		# else find subset of addressbook
+		else:
+			# Get list of tuples (field, arg)
+			fields_args = get_field_and_args_from_input(line)
+			if not fields_args: return
+
+			# Search address book for specified contacts
+			lists = [] # a list of lists returned by search, each list the result of a search on one field
+			for field_arg in fields_args:
+				lists.append(self.addressbook.search(field_arg[0], field_arg[1]))
+
+			# Intersect all resulting lists from field queries
+			# This is a list of tuples (index, contact)
+			search_results = list(set(lists[0]).intersection(*lists[1:]))
+
+			if len(search_results) > 0:
+				for result in search_results:
+					print "\n{0}".format(result[1].print_mailing())
+				print "\n"
 			else:
 				print "There were no contacts that met your specification. Please generalize/check your request."
 
