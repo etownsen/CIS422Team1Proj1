@@ -238,10 +238,22 @@ class CommandLineInterface(Cmd):
 					new_data = None
 					old_data = getattr(contact[1], field[0], '')
 					while not valid(new_data):
-						new_data = raw_input("{0}: {1}".format(field[1], old_data) + chr(8)*len(old_data))
+						user_input = raw_input("{0}: {1}".format(field[1], old_data) + chr(8)*len(old_data))
 						# NOTE: 8 is the ASCII value of backspace
-						if not new_data:
-							new_data = old_data
+						if not user_input:
+							user_input = old_data
+
+						# My hacky way of having the newly added chars replace those of the old_data
+						# for cases where user replaces some, but not all, of the old data's chars
+						user_input = list(user_input)
+						new_data = list(old_data)
+						for i in range(len(user_input)):
+							try:
+								new_data[i] = user_input[i]
+							except IndexError:
+								new_data.extend(user_input[i:])
+								break
+						new_data = ''.join(new_data)
 
 					# Update the temp Contact Info
 					setattr(temp, field[0], new_data)
