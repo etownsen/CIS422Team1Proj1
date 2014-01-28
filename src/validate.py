@@ -16,7 +16,8 @@ def validate_name(name):
     This will match strings of at least 1 character consisting of the upper
     and lower case alphabet as well as hyphens.
     """
-    valid = re.match('^[A-Za-z-]+$', name)
+    if name==None: return False
+    valid = re.match('^$|^[A-Za-z-]+$', name)
     if not valid:
         # print "Invalid name"
         return False
@@ -27,7 +28,8 @@ def validate_address(address):
     This matches everything as name, with the addition of numbers, dashes,
     colons, periods, pound signs, and spaces.
     """
-    valid = re.match(r'^[0-9]+[0-9A-Za-z \.#:-]+$', address)
+    if address==None: return False
+    valid = re.match(r'^$|^[0-9]+[0-9A-Za-z \.#:-]+$', address)
     if not valid:
         # print "Invalid name"
         return False
@@ -38,7 +40,8 @@ def validate_city(city):
     Pretty much the same as the names, but with spaces and numbers.
     City name should start with letters.
     """
-    valid = re.match('^[A-Za-z]+[A-Za-z0-9 -]+$', city)
+    if city==None: return False
+    valid = re.match('^$|^[A-Za-z]+[A-Za-z0-9 -]+$', city)
     if not valid:
         # print "Invalid city"
         return False
@@ -48,7 +51,8 @@ def validate_state(state):
     """
     Full alphabet and spaces.
     """
-    valid = re.match('^[A-Za-z ]+$', state)
+    if state==None: return False
+    valid = re.match('^$|^[A-Za-z ]+$', state)
     if not valid:
         # print "Invalid state"
         return False
@@ -58,7 +62,8 @@ def validate_zip(zipcode):
     """
     Matches either 5 (97403) or 9 (97403-1234) zip codes.
     """
-    valid = re.match('^[0-9]{5}(-[0-9]{4})?$', zipcode)
+    if zipcode==None: return False
+    valid = re.match('^$|^[0-9]{5}(-[0-9]{4})?$', zipcode)
     if not valid:
         # print "Invalid zipcode"
         return False
@@ -68,11 +73,24 @@ def validate_email(email):
     """
     Matches an email address.
     """
-    valid = re.match(r'[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}', email)
+    if email==None: return False
+    valid = re.match(r'^$|[-0-9a-zA-Z.+_]+@[-0-9a-zA-Z.+_]+\.[a-zA-Z]{2,4}', email)
     if not valid:
         # print "Invalid email"
         return False
     return True
+
+def validate_phone(phone):
+    """
+    Matches an phone number.
+    """
+    if phone==None: return False
+    valid = re.match('^$|[0-9]{10,11}(x[0-9]{4})?$', phone)
+    if not valid:
+        # print "Invalid email"
+        return False
+    return True
+
 
 def main():
     """
