@@ -316,11 +316,13 @@ class CommandLineInterface(Cmd):
 			if yes_delete in ('yes', 'y'):
 				yes_delete = raw_input("*** Are you sure? (y/n): ")
 				if yes_delete in ('yes', 'y'):
-					self.addressbook.delete(contact[0])
-					print "Contact deleted."
+					try:
+						self.addressbook.delete(contact[0])
+						print "Contact deleted."
+					except:
+						print "*** Encountered an error while trying to delete, please make sure your input is correct."
 					return
 			print "No deletions."
-
 		else:
 			print "There were no contacts that met your specification. Please generalize your request."
 
@@ -411,7 +413,7 @@ class CommandLineInterface(Cmd):
 
 		if file_name:
 			try:
-				self.addressbook = utils.open_ab(file_name)
+				self.addressbook = utils.open_addressbook(file_name)
 				self.current_book_filename = file_name
 				print "Now using address book from file '{0}'".format(file_name)
 			except:
@@ -429,7 +431,7 @@ class CommandLineInterface(Cmd):
 		confirm = raw_input("Are you sure you want to overwrite the existing file '{0}'? (y/n): ".format(file_name))
 		if confirm in ['yes', 'y']:
 			try:
-				utils.save_ab(self.addressbook, file_name)
+				utils.save_addressbook(self.addressbook, file_name)
 				print "Successfully saved your address book to the file '{0}'".format(file_name)
 			except:
 				print "in save"
@@ -457,7 +459,7 @@ class CommandLineInterface(Cmd):
 
 		if overwrite in ['yes', 'y']:
 			try:
-				utils.save_ab(self.addressbook, file_name)
+				utils.save_addressbook(self.addressbook, file_name)
 				self.current_book_filename = file_name
 				print "Successfully saved your address book to the file '{0}'".format(file_name)
 			except:

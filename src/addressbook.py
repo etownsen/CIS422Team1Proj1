@@ -82,7 +82,7 @@ class AddressBook(object):
     A simple personal address book. Holds a list of Contact objects
     and provides multiple functionalities to handle them.
     """
-    def __init__(self, contacts=[], name='bluebook.pk'):
+    def __init__(self, contacts=[], name=''):
         """
         Initialize an AddressBook object with an empty list
         or given a list of contacts.
@@ -121,23 +121,20 @@ class AddressBook(object):
         """
         Remove an entry from the address book given its index. The index
         is returned by the search method.
+        Raises IndexError if index is no in the list.
         """
-        try:
-            del self.contacts[index]
-            self.total -= 1
-        except IndexError, err:
-            sys.stderr.write('ERROR: %s\n' % str(err))
+        del self.contacts[index]
+        self.total -= 1
 
     def sort(self, attributes=['lname'], desc=False):
         """
         Sort the address book by the given list of attributes. The first
         attribute is used and ties are broken using the next attributes in
         the list.
+        Raises AttributeError if one of the attributes does not exist.
         """
-        try:
-            self.contacts.sort(key=attrgetter(*attributes), reverse=desc)
-        except AttributeError, err:
-            sys.stderr.write('ERROR: %s\n' % str(err))
+        self.contacts.sort(key=attrgetter(*attributes), reverse=desc)
+
 
     def search(self, attribute, value, search_list=None):
         """
@@ -155,10 +152,17 @@ class AddressBook(object):
             if getattr(entry, attribute).lower() == value.lower():
                 result.append((index, entry))
         return result
-
+    
+    def merge(self, address_book):
+        """
+        Merge two address books.
+        """
+        pass
+        
     def import_contacts(self, file_name):
         """NOT FINISHED."""
         # try and catch file exception and file not formatted
+        # possibly follow first line template and reject ones that don't follow
         with open(file_name, 'rb') as tsvfile:
             result = csv.reader(tsvfile, delimiter='\t', quotechar='|')
             for line in result:
@@ -173,11 +177,14 @@ class AddressBook(object):
         # try and catch file errors
         for entry in self.contacts:
             info = entry.get_filtered_info()
+            #check for minimum requirements or follow a template on first line
             info = [info['last'], info['address'], info['second'],
                     info['name'], info['phone']]
-            line = '\t'.join(filter(None, info))
+            #line = '\t'.join(filter(None, info)) #Maybe need empty field holders
+            line = '\t'.join(info)
             res.append(line)
         res = '\n'.join(filter(None, res)).upper()
+        #res = '\n'.join(res).upper()
         with open(file_name, 'wb') as f:
             f.write(res)
 
@@ -189,30 +196,30 @@ def main():
     a = Contact()
     a2 = Contact('fname', 'lname', '10 a st', 'eugene', 'or',
                  '97401', '541', 'a@a.com', 'apt 10')
-    b = Contact('bbb', '', '20 b st', 'Eugene', 'OR', '97402', '', 'b@b.com')
-    c = Contact('ccc', 'CCC', '', 'Eugene', 'OR', '97403', '541', 'c@c.com')
+    b = Contact('bbb', 'john', '20 b st', 'Eugene', 'OR', '97402', '54535', 'b@b.com')
+    c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
     b2 = Contact('bbb', 'BBB', '20 b st', '', 'OR', '97404', '541', 'b@b.com')
-    # print a.print_mailing()
     arr = [a2, b, c, b2, a]
     ab = AddressBook(arr)
     # ab.add(a)
     # ab.add(b)
     # ab.add(c)
     # ab.add(arr)
-    print ab
+    #print ab
     # print ab.print_all_mailing()
-    res = ab.search('email', 'a@a.com')
-    print str(res[0][1])
-    res2 = ab.search('zipcode', '97404', res)
-    print res2
-    ab.sort(['lname', 'zipcode'])
-    utils.save_ab(ab, ab.name)
-    ab2 = utils.open_ab('bluebook.pk')
-    # print ab2
-    ab2.export_contacts('f.tsv')
-    ab3 = AddressBook()
-    ab3.import_contacts('f.tsv')
-    print ab3
+    #res = ab.search('email', 'a@a.com')
+    #print str(res[0][1])
+    #res2 = ab.search('zipcode', '97404', res)
+    #print res2
+    #ab.sort(['lname', 'zipcode'])
+    #utils.save_ab(ab, ab.name)
+    #ab2 = utils.open_ab('mybook')
+    #print ab2.print_all_mailing()
+    #ab.delete(10)
+#     ab.export_contacts('f.tsv')
+#     ab3 = AddressBook()
+#     ab3.import_contacts('f.tsv')
+#     print ab3
 
 
 if __name__ == "__main__":

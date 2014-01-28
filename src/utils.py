@@ -10,19 +10,20 @@
 
 import cPickle as pickle
 
-def open_ab(file_name):
+def open_addressbook(file_name):
     """
     Open an address book file, returning an AddressBook object.
-    Raises IOError when file is not found.
+    Raises IOError if file is not found or has no read permission.
     """
     address_book = None
     with open(file_name, 'rb') as data:
         address_book = pickle.load(data)
     return address_book
 
-def save_ab(address_book, file_name):
+def save_addressbook(addressbook, file_name):
     """
     Save an AddressBook object to a file.
+    Raises IOError if file exist and has no write permission.
     """
     with open(file_name, 'wb') as output:
-        pickle.dump(address_book, output, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(addressbook, output, pickle.HIGHEST_PROTOCOL)
