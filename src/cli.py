@@ -9,6 +9,7 @@ import sys
 from cmd import Cmd
 
 from addressbook import Contact, AddressBook
+import utils
 
 WELCOME_MESSAGE = \
 	"\nWelcome to Blue Book!\n" + \
@@ -47,7 +48,7 @@ BAD_FLAGS_MESSAGE = \
 	"***Make sure you are using valid flags and each flag has a valid, quoted argument.\n" + \
 	"***Enter \"options\" to view available command/flag options.\n"
 
-VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help")
+VALID_OPTIONS = ("add", "edit", "delete", "display", "quit", "options", "help", "open", "save", "save_as")
 VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
@@ -63,12 +64,6 @@ CONTACT_FIELDS = [
 
 REQUIRED_FIELDS = [ "lname" ]
 
-def even_num_words(line):
-	"""
-	returns true if 'line' consists of an even number of white-spaced even_num_words
-	returns false otherwise
-	"""
-	return len(str.split(line))%2 == 0
 
 def get_field_and_args_from_input(line):
 	"""
@@ -106,9 +101,12 @@ class CommandLineInterface(Cmd):
 	edit
 	delete
 	display
-	quit
+	open
+	save
+	save_as
 	options
 	help
+	quit
 
 	TODO: 
 	import
@@ -171,11 +169,6 @@ class CommandLineInterface(Cmd):
 		if line == "":
 			print EDIT_AND_DELETE_NEED_ARGS
 			return
-
-		# # There should be a one-to-one correspondence between flags and arguments
-		# if not even_num_words(line):
-		# 	print BAD_FLAGS_MESSAGE
-		# 	return
 
 		# Get list of tuples of (field, arg)
 		fields_args = get_field_and_args_from_input(line)
@@ -248,11 +241,6 @@ class CommandLineInterface(Cmd):
 			print EDIT_AND_DELETE_NEED_ARGS
 			return
 
-		# # There should be a one-to-one correspondence between flags and arguments
-		# if not even_num_words(line):
-		# 	print BAD_FLAGS_MESSAGE
-		# 	return
-
 		# Get list of tuples of (field, arg)
 		fields_args = get_field_and_args_from_input(line)
 		if not fields_args: return
@@ -297,11 +285,6 @@ class CommandLineInterface(Cmd):
 		If no flags are given, displays all contacts in the Address Book.
 		If flags are present, then displays only contacts that meet all of the specifications given by flags.
 		"""
-
-		# # There should be a one-to-one correspondence between flags and arguments
-		# if not even_num_words(line):
-		# 	print BAD_FLAGS_MESSAGE
-		# 	return
 
 		# if no flags, arguments: 
 		# Print entire address book
