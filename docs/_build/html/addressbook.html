@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>addressbook module &mdash; Blue Book 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Blue Book 1.0 documentation" href="index.html" />
+    <link rel="up" title="src" href="modules.html" />
+    <link rel="next" title="cli module" href="cli.html" />
+    <link rel="prev" title="src" href="modules.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
+          <li><a href="modules.html" accesskey="U">src</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-addressbook">
+<span id="addressbook-module"></span><h1>addressbook module<a class="headerlink" href="#module-addressbook" title="Permalink to this headline">¶</a></h1>
+<p>Address Book Module.</p>
+<p>For simple Address Book applet - Project 1 -
+CIS 422, W&#8216;14, University of Oregon.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Abdulrahman Alkhelaifi &lt;<a class="reference external" href="mailto:abdul&#37;&#52;&#48;cs&#46;uoregon&#46;edu">abdul<span>&#64;</span>cs<span>&#46;</span>uoregon<span>&#46;</span>edu</a>&gt;</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="addressbook.AddressBook">
+<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">AddressBook</tt><big>(</big><em>contacts=</em>, <span class="optional">[</span><span class="optional">]</span><em>name='bluebook.pk'</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple personal address book. Holds a list of Contact objects
+and provides multiple functionalities to handle them.</p>
+<dl class="method">
+<dt id="addressbook.AddressBook.add">
+<tt class="descname">add</tt><big>(</big><em>entry</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an entry to the address book given a single Contact
+or a list of Contacts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.delete">
+<tt class="descname">delete</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove an entry from the address book given its index. The index
+is returned by the search method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.export_contacts">
+<tt class="descname">export_contacts</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.export_contacts" title="Permalink to this definition">¶</a></dt>
+<dd><p>NOT FINISHED.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.import_contacts">
+<tt class="descname">import_contacts</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.import_contacts" title="Permalink to this definition">¶</a></dt>
+<dd><p>NOT FINISHED.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.print_all_mailing">
+<tt class="descname">print_all_mailing</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.AddressBook.print_all_mailing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation of the whole address book
+in the standard mailing label format.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.search">
+<tt class="descname">search</tt><big>(</big><em>attribute</em>, <em>value</em>, <em>list=None</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search the address book for all entries with a given attribute
+and its value. This method can be called multiple times passing the result
+from each call as the third argument to narrow the search.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.sort">
+<tt class="descname">sort</tt><big>(</big><em>attributes=['lname'], desc=False</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the address book by the given list of attributes. The first
+attribute is used and ties are broken using the next attributes in
+the list.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="addressbook.Contact">
+<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">Contact</tt><big>(</big><em>fname=''</em>, <em>lname=''</em>, <em>address=''</em>, <em>city=''</em>, <em>state=''</em>, <em>zipcode=''</em>, <em>phone=''</em>, <em>email=''</em>, <em>address2=''</em><big>)</big><a class="headerlink" href="#addressbook.Contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class representing a single entry in the address book.</p>
+<dl class="method">
+<dt id="addressbook.Contact.get_filtered_info">
+<tt class="descname">get_filtered_info</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.Contact.get_filtered_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a dictionary of filtered information for the Contact object.
+Useful when Contact has empty fields.</p>
+<div class="line-block">
+<div class="line">name: first last</div>
+<div class="line">delivery: address second</div>
+<div class="line">last: city state zipcode</div>
+<div class="line">phone: phone</div>
+<div class="line">email: email</div>
+<div class="line">address: address</div>
+<div class="line">second: second</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.Contact.print_mailing">
+<tt class="descname">print_mailing</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.Contact.print_mailing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string representation in the standard mailing label format.</p>
+<div class="line-block">
+<div class="line">NAME (FIRST LAST) (e.g., ABC MOVERS)</div>
+<div class="line">DELIVERY (ADDRESS SECOND) (e.g., 1500 E MAIN AVE STE 201)</div>
+<div class="line">LAST (CITY STATE ZIP) (e.g., SPRINGFIELD VA 22162-1010)</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="addressbook.main">
+<tt class="descclassname">addressbook.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="previous chapter">src</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cli.html"
+                        title="next chapter">cli module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/addressbook.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="src"
+             >previous</a> |</li>
+        <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
+          <li><a href="modules.html" >src</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Team Neo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>
