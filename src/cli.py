@@ -166,11 +166,11 @@ class CommandLineInterface(Cmd):
 	def do_prepop_book(self, line):
 		# TODO this is for testing, should be removed for final product
 		a = Contact()
-		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com')
+		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com', 'apt#1')
 		b = Contact()
-		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com')
+		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
 		c = Contact()
-		c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu')
+		c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu', 'apt#3')
 		self.addressbook.add([a, b, c])
 
 	def do_add(self, line):

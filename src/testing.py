@@ -11,6 +11,7 @@ def test_validate():
     print
     print 'address T: 1500 main st', validate_address('1500 main st')
     print 'address T: 1500 7th ave', validate_address('1500 7th ave')
+    print 'address T: 1500 7th ave', validate_address('1500 7th ave')
     print 'address F: main st', validate_address('main st')
     print
     print 'city T: eugene', validate_city('eugene')
@@ -47,16 +48,12 @@ def test_validate():
 
 def test_addressbook():
     a = Contact()
-    a2 = Contact()
-    a2.testing('fname', 'lname', '10 a st', 'eugene', 'or',
-                 '97401', '541', 'a@a.com', 'apt 10')
+    a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com', 'apt#1')
     b = Contact()
-    b.testing('bbb', 'john', '20 b st', 'Eugene', 'OR', '97402', '54535', 'b@b.com')
+    b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
     c = Contact()
-    c.testing('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
-    b2 = Contact()
-    b2.testing('bbb', 'BBB', '20 b st', '', 'OR', '97404', '541', 'b@b.com')
-    arr = [a2, b, c, b2, a]
+    c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu', 'apt#3')
+    arr = [b, c, a]
     ab = AddressBook(arr)
     print ab
     # ab.add(a)
@@ -69,7 +66,8 @@ def test_addressbook():
     #print str(res[0][1])
     #res2 = ab.search('zipcode', '97404', res)
     #print res2
-    #ab.sort(['lname', 'zipcode'])
+    ab.sort()
+    print ab
     #utils.save_ab(ab, ab.name)
     #ab2 = utils.open_ab('mybook')
     #print ab2.print_all_mailing()
@@ -81,7 +79,7 @@ def test_addressbook():
 
 
 def main():
-    test_validate()
+    #test_validate()
     test_addressbook()
 
 if __name__ == "__main__":

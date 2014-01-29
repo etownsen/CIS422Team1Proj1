@@ -145,8 +145,9 @@ class AddressBook(object):
         the list.
         Raises AttributeError if one of the attributes does not exist.
         """
-        self.contacts.sort(key=attrgetter(*attributes), reverse=desc)
-
+        attrs = attrgetter(*attributes)
+        self.contacts.sort(key=lambda x: [x.lower() for x in attrs(x)],
+                           reverse=desc)
 
     def search(self, attribute, value, search_list=None):
         """
@@ -164,38 +165,67 @@ class AddressBook(object):
             if getattr(entry, attribute).lower() == value.lower():
                 result.append((index, entry))
         return result
+        
+    def import_contacts(self, file_name):
+        """
+        Import a contacts list from a tsv file.
+        The format of the file is as follows:
+        Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+        followed by a list of contacts with the same format.
+        Raises IOError if file is not found or has no read permission.
+        """
+        with open(file_name, 'rb') as tsvfile:
+            tsv_reader = csv.reader(tsvfile, delimiter='\t', quotechar='|')
+            tsv_header = tsv_reader.next()
+            for line in tsv_reader:
+                fields = {key.lower() : value for key, value in zip(tsv_header, line)}
+                entry = Contact()
+                if 'last' in fields and fields['last']:
+                    last = fields['last'].split()
+                    entry.city = last[0]
+                    try: 
+                        entry.state = last[1]
+                        entry.zipcode = last[2]
+                    except:
+                        pass
+                if 'delivery' in fields and fields['delivery']:
+                    delivery = fields['delivery']
+                    entry.address = delivery
+                if 'second' in fields and fields['second']:
+                    second = fields['second']
+                    entry.address2 = second
+                if 'recipient' in fields and fields['recipient']:
+                    recipient = fields['recipient'].split()
+                    entry.fname = recipient[0]
+                    try: entry.lname = recipient[1]
+                    except: pass
+                if 'phone' in fields and fields['phone']:
+                    phone = fields['phone']
+                    entry.phone = phone
+                self.add(entry)
     
+    def export_contacts(self, file_name):
+        """
+        Export the contacts list to a tsv file.
+        The format of the file is as follows:
+        Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+        followed by a list of contacts with the same format.
+        Raises IOError if file exist and has no write permission.
+        """
+        with open(file_name, 'wb') as tsvfile:
+            tsv_writer = csv.writer(tsvfile, delimiter='\t', quotechar='|')
+            header = ['Last', 'Delivery', 'Second', 'Recipient', 'Phone']
+            tsv_writer.writerow(header)
+            for entry in self.contacts:
+                info = entry.get_filtered_info()
+                info = {key : value.upper() for key, value in info.iteritems()}
+                info = [info['last'], info['address'], info['second'],
+                        info['name'], info['phone']]
+                tsv_writer.writerow(info)
+
     def merge(self, address_book):
         """
         Merge two address books.
         """
         pass
-        
-    def import_contacts(self, file_name):
-        """NOT FINISHED."""
-        # try and catch file exception and file not formatted
-        # possibly follow first line template and reject ones that don't follow
-        with open(file_name, 'rb') as tsvfile:
-            result = csv.reader(tsvfile, delimiter='\t', quotechar='|')
-            for line in result:
-                print line
-                entry = Contact()
-                # SET ATTRIBUTES
-                # self.add(entry)
-
-    def export_contacts(self, file_name):
-        """NOT FINISHED."""
-        res = []
-        # try and catch file errors
-        for entry in self.contacts:
-            info = entry.get_filtered_info()
-            #check for minimum requirements or follow a template on first line
-            info = [info['last'], info['address'], info['second'],
-                    info['name'], info['phone']]
-            #line = '\t'.join(filter(None, info)) #Maybe need empty field holders
-            line = '\t'.join(info)
-            res.append(line)
-        res = '\n'.join(filter(None, res)).upper()
-        #res = '\n'.join(res).upper()
-        with open(file_name, 'wb') as f:
-            f.write(res)
+    
