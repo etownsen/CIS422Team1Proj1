@@ -5,7 +5,6 @@ from addressbook import Contact, AddressBook
 import utils
 import validate
 import math
-import add
 from cli import CONTACT_FIELDS, FIELD_VALIDATORS, REQUIRED_FIELDS
 import tkFileDialog 
 
