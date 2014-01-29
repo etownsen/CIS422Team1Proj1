@@ -11,7 +11,6 @@ def test_validate():
     print
     print 'address T: 1500 main st', validate_address('1500 main st')
     print 'address T: 1500 7th ave', validate_address('1500 7th ave')
-    print 'address T: 1500 7th ave', validate_address('1500 7th ave')
     print 'address F: main st', validate_address('main st')
     print
     print 'city T: eugene', validate_city('eugene')
@@ -52,7 +51,7 @@ def test_addressbook():
     b = Contact()
     b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
     c = Contact()
-    c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu', 'apt#3')
+    c.testing('Jason', 'Dines', '30 c st', 'Eugene', '', '97403', '541', 'bro@uoregon.edu', 'apt#3')
     arr = [b, c, a]
     ab = AddressBook(arr)
     print ab

@@ -8,9 +8,8 @@
     :author: Abdulrahman Alkhelaifi <abdul@cs.uoregon.edu>
 """
 
-import sys
-import utils
 import csv
+import validate
 from operator import itemgetter, attrgetter
 
 class Contact(object):
@@ -182,10 +181,13 @@ class AddressBook(object):
                 entry = Contact()
                 if 'last' in fields and fields['last']:
                     last = fields['last'].split()
-                    entry.city = last[0]
+                    for key, value in enumerate(last):
+                        if validate.validate_zip(value)[0]:
+                            entry.zipcode = value
+                            del last[key]
                     try: 
+                        entry.city = last[0]
                         entry.state = last[1]
-                        entry.zipcode = last[2]
                     except:
                         pass
                 if 'delivery' in fields and fields['delivery']:
@@ -214,7 +216,7 @@ class AddressBook(object):
         """
         with open(file_name, 'wb') as tsvfile:
             tsv_writer = csv.writer(tsvfile, delimiter='\t', quotechar='|')
-            header = ['Last', 'Delivery', 'Second', 'Recipient', 'Phone']
+            header = ['Last', 'Delivery', 'Second', 'Recipient']
             tsv_writer.writerow(header)
             for entry in self.contacts:
                 info = entry.get_filtered_info()
