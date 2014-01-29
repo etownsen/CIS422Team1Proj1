@@ -166,11 +166,11 @@ class CommandLineInterface(Cmd):
 	def do_prepop_book(self, line):
 		# TODO this is for testing, should be removed for final product
 		a = Contact()
-		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com', 'apt#1')
+		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '(541) 555-1234', 'Super@man.com', 'apt#1')
 		b = Contact()
-		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
+		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '(541) 555-2559', 'malemodel@ballz.com', 'apt#2')
 		c = Contact()
-		c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '541', 'bro@uoregon.edu', 'apt#3')
+		c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '(541) 911-3232', 'bro@uoregon.edu', 'apt#3')
 		self.addressbook.add([a, b, c])
 
 	def do_add(self, line):
@@ -514,10 +514,44 @@ class CommandLineInterface(Cmd):
 				print "*** Encountered an error while trying to save. Sorry..."
 	
 	def do_import(self, line):
-		pass
-		
+		"""
+		Import a contacts list from a tsv file and add the contacts to the current book.
+		The format of the file is as follows:
+		Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+		followed by a list of contacts with the same format.
+		"""
+		file_name = raw_input("Please give the name/path of the file from which you want to import contacts (or leave blank to cancel): ")
+
+		if file_name:
+			confirm = raw_input("Are you sure you want to try to merge the contacts from this file into your current book? (y/n): ")
+			if confirm not in ['yes', 'y']: print "Cancelling import."; return
+			try:
+				self.addressbook.import_contacts(file_name)
+				print "Successfully imported contacts from '{0}'".format(file_name)
+			except:
+				print "*** Encountered an error while trying to import from that file. " + \
+					"Please make sure you provided a good file name and that the file matches the format described in 'help import'."
+		else:
+			print "Cancelling import."
+
 	def do_export(self, line):	
-		pass		
+		"""
+		Export the contacts of the current AddressBook to a tsv file.
+		The format of the file is as follows:
+		Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+		followed by a list of contacts with the same format.
+		"""	
+		file_name = raw_input("Please give the name of the file to which you want to export contacts (or leave blank to cancel): ")
+			
+		if file_name:
+			try:
+				self.addressbook.export_contacts(file_name)
+				print "Successfully exported your address book to the file '{0}'".format(file_name)
+			except:
+				print "*** Encountered an error while trying to export. Sorry..."
+		else:
+			print "Cancelling export."
+
 
 	def do_options(self, line):
 		"""
