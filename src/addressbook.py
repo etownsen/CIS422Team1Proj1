@@ -17,10 +17,22 @@ class Contact(object):
     """
     A class representing a single entry in the address book.
     """
-    def __init__(self, fname='', lname='', address='', city='', state='',
-                 zipcode='', phone='', email='', address2=''):
+    
+    default_attrs = ['fname', 'lname', 'address', 'city', 'state',
+                          'zipcode', 'phone', 'email', 'address2']
+    
+    def __init__(self):
         """
         Initialize a Contact object which is an entry in the address book.
+        """
+        for attr in Contact.default_attrs:
+            setattr(self, attr, "a")
+        
+    def testing(self, fname='', lname='', address='', city='', state='',
+                 zipcode='', phone='', email='', address2=''):
+        """
+        Testing constructor that initializes a Contact object given the default
+        attributes.
         """
         self.fname = fname
         self.lname = lname
@@ -121,7 +133,7 @@ class AddressBook(object):
         """
         Remove an entry from the address book given its index. The index
         is returned by the search method.
-        Raises IndexError if index is no in the list.
+        Raises IndexError if index is not in the list.
         """
         del self.contacts[index]
         self.total -= 1
@@ -193,33 +205,7 @@ def main():
     """
     Testing...
     """
-    a = Contact()
-    a2 = Contact('fname', 'lname', '10 a st', 'eugene', 'or',
-                 '97401', '541', 'a@a.com', 'apt 10')
-    b = Contact('bbb', 'john', '20 b st', 'Eugene', 'OR', '97402', '54535', 'b@b.com')
-    c = Contact('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
-    b2 = Contact('bbb', 'BBB', '20 b st', '', 'OR', '97404', '541', 'b@b.com')
-    arr = [a2, b, c, b2, a]
-    ab = AddressBook(arr)
-    # ab.add(a)
-    # ab.add(b)
-    # ab.add(c)
-    # ab.add(arr)
-    #print ab
-    # print ab.print_all_mailing()
-    #res = ab.search('email', 'a@a.com')
-    #print str(res[0][1])
-    #res2 = ab.search('zipcode', '97404', res)
-    #print res2
-    #ab.sort(['lname', 'zipcode'])
-    #utils.save_ab(ab, ab.name)
-    #ab2 = utils.open_ab('mybook')
-    #print ab2.print_all_mailing()
-    #ab.delete(10)
-#     ab.export_contacts('f.tsv')
-#     ab3 = AddressBook()
-#     ab3.import_contacts('f.tsv')
-#     print ab3
+
 
 
 if __name__ == "__main__":
