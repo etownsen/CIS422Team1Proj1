@@ -66,13 +66,25 @@ def validate_city(city):
 
 def validate_state(state):
     """
-    Match the full alphabet and spaces.
+    Match a state name or abbreviation.
     """
+    states = ['ALABAMA','AL', 'ALASKA','AK', 'ARIZONA','AZ','ARKANSAS','AR',
+     'CALIFORNIA','CA', 'COLORADO','CO', 'CONNECTICUT','CT',
+     'DELAWARE','DE', 'DISTRICT OF COLUMBIA','DC', 'FLORIDA','FL',
+     'GEORGIA','GA', 'HAWAII','HI', 'IDAHO','ID', 'ILLINOIS','IL',
+     'INDIANA','IN', 'IOWA','IA', 'KANSAS','KS', 'KENTUCKY','KY',
+     'LOUISIANA','LA', 'MAINE','ME', 'MONTANA','MT', 'NEBRASKA','NE',
+     'NEVADA','NV', 'NEW HAMPSHIRE','NH', 'NEW JERSEY','NJ', 'NEW MEXICO','NM',
+     'NEW YORK','NY', 'NORTH CAROLINA','NC', 'NORTH DAKOTA','ND', 'OHIO','OH',
+     'OKLAHOMA','OK', 'OREGON','OR', 'MARYLAND','MD', 'MASSACHUSETTS','MA',
+     'MICHIGAN','MI', 'MINNESOTA','MN', 'MISSISSIPPI','MS', 'MISSOURI','MO',
+     'PENNSYLVANIA','PA', 'RHODE ISLAND','RI', 'SOUTH CAROLINA','SC',
+     'SOUTH DAKOTA','SD', 'TENNESSEE','TN', 'TEXAS','TX', 'UTAH','UT',
+     'VERMONT','VT', 'VIRGINIA','VA', 'WASHINGTON','WA', 'WEST VIRGINIA','WV',
+     'WISCONSIN','WI', 'WYOMING','WY']
     if state==None: return False, ""
-    valid = re.match('^$|^[A-Za-z ]+$', state)
-    if not valid:
-        msg = "The state name you entered is invalid.\nPlease try " + \
-        "again using only alphabetical characters and spaces."
+    if state.upper() not in states:
+        msg = "The state name you entered is invalid.\nPlease try again."
         return False, msg
     return True, ""
 

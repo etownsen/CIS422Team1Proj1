@@ -87,18 +87,22 @@ class Contact(object):
                 'phone': self.phone, 'email': self.email,
                 'address': self.address, 'second': self.address2}
         return {key : value.strip() for key, value in info.iteritems()}
+    
+    def merge_contact(self, other):
+        for attr in Contact.default_attrs:
+            if not getattr(self, attr):
+                setattr(self, attr, getattr(other, attr))
 
 class AddressBook(object):
     """
     A simple personal address book. Holds a list of Contact objects
     and provides multiple functionalities to handle them.
     """
-    def __init__(self, contacts=[], name=''):
+    def __init__(self, contacts=[]):
         """
         Initialize an AddressBook object with an empty list
         or given a list of contacts.
         """
-        self.name = name
         self.contacts = contacts
         self.total = len(contacts)
 
@@ -145,7 +149,7 @@ class AddressBook(object):
         Raises AttributeError if one of the attributes does not exist.
         """
         attrs = attrgetter(*attributes)
-        self.contacts.sort(key=lambda x: [x.lower() for x in attrs(x)],
+        self.contacts.sort(key=lambda x: [x.lower() for x in tuple(attrs(x))],
                            reverse=desc)
 
     def search(self, attribute, value, search_list=None):
@@ -179,31 +183,45 @@ class AddressBook(object):
             for line in tsv_reader:
                 fields = {key.lower() : value for key, value in zip(tsv_header, line)}
                 entry = Contact()
+                
                 if 'last' in fields and fields['last']:
                     last = fields['last'].split()
-                    for key, value in enumerate(last):
+                    for value in last:
                         if validate.validate_zip(value)[0]:
                             entry.zipcode = value
-                            del last[key]
-                    try: 
-                        entry.city = last[0]
-                        entry.state = last[1]
-                    except:
-                        pass
+                        elif validate.validate_state(value)[0]:
+                            entry.state = value
+                        else:  
+                            entry.city = value
+                
                 if 'delivery' in fields and fields['delivery']:
                     delivery = fields['delivery']
-                    entry.address = delivery
+                    if validate.validate_address(delivery)[0]:
+                        entry.address = delivery
+                
                 if 'second' in fields and fields['second']:
                     second = fields['second']
-                    entry.address2 = second
-                if 'recipient' in fields and fields['recipient']:
-                    recipient = fields['recipient'].split()
-                    entry.fname = recipient[0]
-                    try: entry.lname = recipient[1]
-                    except: pass
+                    if validate.validate_address2(second)[0]:
+                        entry.address2 = second
+                
                 if 'phone' in fields and fields['phone']:
                     phone = fields['phone']
-                    entry.phone = phone
+                    if validate.validate_phone(phone)[0]:
+                        entry.phone = phone
+                    
+                if 'recipient' in fields and fields['recipient']:
+                    recipient = fields['recipient'].split()
+                    fname = recipient[0]
+                    if not validate.validate_name(fname)[0]:
+                        continue # If name is not valid, ignore entry
+                    entry.fname = fname
+                    try: 
+                        lname = recipient[1]
+                        if not validate.validate_name(lname)[0]:
+                            continue                            
+                        entry.lname = lname 
+                    except: 
+                        pass           
                 self.add(entry)
     
     def export_contacts(self, file_name):
@@ -225,9 +243,25 @@ class AddressBook(object):
                         info['name'], info['phone']]
                 tsv_writer.writerow(info)
 
-    def merge(self, address_book):
+    def merge_addressbook(self, address_book):
         """
-        Merge two address books.
+        NOT FULLY TESTED.
         """
-        pass
-    
+        self.contacts += address_book.contacts
+        self.total += address_book.total
+        total = self.total
+        i = j = 0
+        while i < total:
+            j = i+1
+            while j < total:
+                print i, j, total
+                # Two entries are the same if they have the same name
+                # so merge them together by combining the attributes 
+                if (self.contacts[i].fname == self.contacts[j].fname and
+                self.contacts[i].lname == self.contacts[j].lname):
+                    self.contacts[i].merge_contact(self.contacts[j])
+                    self.delete(j)
+                    total-=1
+                    j-=1
+                j+=1
+            i += 1    

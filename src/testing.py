@@ -18,6 +18,7 @@ def test_validate():
     print 'city F: 111', validate_city('111')
     print
     print 'state T: Oregon', validate_state('Oregon')
+    print 'state T: OR', validate_state('OR')
     print 'state T: New Mexico', validate_state('New Mexico')
     print 'state F: ore-gon', validate_state('ore-gon')
     print 'state F: or12', validate_state('or12')
@@ -51,26 +52,34 @@ def test_addressbook():
     b = Contact()
     b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
     c = Contact()
-    c.testing('Jason', 'Dines', '30 c st', 'Eugene', '', '97403', '541', 'bro@uoregon.edu', 'apt#3')
+    c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '', '541', 'bro@uoregon.edu', 'apt#3')
     arr = [b, c, a]
     ab = AddressBook(arr)
-    print ab
-    # ab.add(a)
-    # ab.add(b)
-    # ab.add(c)
-    # ab.add(arr)
+    d = Contact()
+    d.testing('343', 'Cb', '30 c st', 'Eugene', '', '97401', '541', 'bro@uoregon.edu', 'apt#3')
+    e = Contact()
+    e.testing('Jason', 'ca', '30 c st', '', 'OR', '97403', '541', 'bro@uoregon.edu')
+#     print e
+#     e.merge_contact(d)
+#     print e
     #print ab
-    # print ab.print_all_mailing()
-    #res = ab.search('email', 'a@a.com')
-    #print str(res[0][1])
-    #res2 = ab.search('zipcode', '97404', res)
-    #print res2
-    ab.sort()
-    print ab
-    #utils.save_ab(ab, ab.name)
+    ab.add([d,e])
+    ab2 = AddressBook([d,e])
+    #ab.merge_addressbook(ab2)
+    #print ab.total
+    #ab.add([d,e])
+    ab.sort(['fname', 'lname'])
+    print set([a,b,c,d,e])
+    res = ab.search('fname', 'jason')
+    for c in res:print str(c[1]) 
+    print
+    res = ab.search('lname', 'dines', res)
+    for c in res:print str(c[1]) 
+    print
+    
+    #utils.save_ab(ab, 'mybook')
     #ab2 = utils.open_ab('mybook')
     #print ab2.print_all_mailing()
-    #ab.delete(10)
     ab.export_contacts('f.tsv')
     ab3 = AddressBook()
     ab3.import_contacts('f.tsv')
