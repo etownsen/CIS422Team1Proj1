@@ -30,6 +30,8 @@ OPTIONS_MESSAGE = \
 	"open\n" + \
 	"save\n" + \
 	"save_as\n" + \
+	"import\n" + \
+	"export\n" + \
 	"options\n" + \
 	"help\n" + \
 	"quit\n" + \
@@ -61,7 +63,7 @@ MALFORMED_DATA_MESSAGE = \
 	"*** The contact info you provided does not conform to standards this applet is familiar with.\n" + \
 	"*** Please try again."
 
-VALID_OPTIONS = ("add", "edit", "delete", "display", "display_mail", "sort", "open", "save", "save_as", "options", "help", "quit")
+VALID_OPTIONS = ("add", "edit", "delete", "display", "display_mail", "sort", "open", "save", "save_as", "import", "export", "options", "help", "quit")
 VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
@@ -131,13 +133,11 @@ class CommandLineInterface(Cmd):
 	open
 	save
 	save_as
+	import
+	export
 	options
 	help
 	quit
-
-	TODO: 
-	import
-	export
 
 	VALID FLAGS (used with keywords edit, delete, display, sort):
 	NOTE all flags must be followed by a single argument in quotes (eg: -a "123 Easy St"; -fn "Kevin").
@@ -400,6 +400,37 @@ class CommandLineInterface(Cmd):
 				print "\n"
 			else:
 				print "There were no contacts that met your specification. Please generalize/check your request."
+	
+	def do_sort(self, line):
+		"""
+        Sort the address book by the given attributes (flags). The first
+        attribute is used and ties are broken using the following attributes in
+        the list.
+        Defaults to sorting by last name.  Ties are broken by last name.
+		"""
+
+		# convert flags to list of attributes.
+		flags = line.split()
+		attrs = []
+
+		for flag in flags:
+			if flag not in VALID_FLAGS:
+				print "'{0}' is not a valid flag. Enter \"options\" to view available flag options.\n".format(flag)
+				return
+
+			for field in CONTACT_FIELDS:
+				if flag == field[2]:
+					attrs.append(field[0])
+
+		# Ties are broken by name
+		attrs.extend(['lname', 'fname'])
+
+		# Apply sort function
+		try:
+			self.addressbook.sort(attributes=attrs)
+			print "Address book is now sorted.\n"
+		except:
+			print "*** Encountered an error while trying to sort, please make sure your input is correct."
 
 	def do_open(self, line):
 		"""
@@ -420,6 +451,9 @@ class CommandLineInterface(Cmd):
 				print "*** Encountered an error while trying to open that file. Please make sure you provided a good file name."
 
 	def do_save(self, line):
+		"""
+		Save an address book as an object to a file, to the file name inferred from current address book.
+		"""
 
 		if self.current_book_filename == '': 
 			print "This seems to be a new address book."
@@ -465,37 +499,12 @@ class CommandLineInterface(Cmd):
 			except:
 				print "in save as"
 				print "*** Encountered an error while trying to save. Sorry..."
+	
+	def do_import(self, line):
+		pass
 		
-	def do_sort(self, line):
-		"""
-        Sort the address book by the given attributes (flags). The first
-        attribute is used and ties are broken using the following attributes in
-        the list.
-        Defaults to sorting by last name.  Ties are broken by last name.
-		"""
-
-		# convert flags to list of attributes.
-		flags = line.split()
-		attrs = []
-
-		for flag in flags:
-			if flag not in VALID_FLAGS:
-				print "'{0}' is not a valid flag. Enter \"options\" to view available flag options.\n".format(flag)
-				return
-
-			for field in CONTACT_FIELDS:
-				if flag == field[2]:
-					attrs.append(field[0])
-
-		# Ties are broken by name
-		attrs.extend(['lname', 'fname'])
-
-		# Apply sort function
-		try:
-			self.addressbook.sort(attributes=attrs)
-			print "Address book is now sorted.\n"
-		except:
-			print "*** Encountered an error while trying to sort, please make sure your input is correct."
+	def do_export(self, line):	
+		pass		
 
 	def do_options(self, line):
 		"""
