@@ -18,8 +18,8 @@ class Contact(object):
     A class representing a single entry in the address book.
     """
     
-    default_attrs = ['fname', 'lname', 'address', 'city', 'state',
-                          'zipcode', 'phone', 'email', 'address2']
+    default_attrs = ['fname', 'lname', 'address', 'address2', 'city',
+                     'state', 'zipcode', 'phone', 'email']
     
     def __init__(self):
         """
@@ -87,7 +87,7 @@ class Contact(object):
         info = {'name': name, 'delivery': address, 'last': last,
                 'phone': self.phone, 'email': self.email,
                 'address': self.address, 'second': self.address2}
-        return {key:value.strip() for key, value in info.iteritems()}
+        return {key : value.strip() for key, value in info.iteritems()}
 
 class AddressBook(object):
     """
@@ -199,14 +199,3 @@ class AddressBook(object):
         #res = '\n'.join(res).upper()
         with open(file_name, 'wb') as f:
             f.write(res)
-
-
-def main():
-    """
-    Testing...
-    """
-
-
-
-if __name__ == "__main__":
-    main()
