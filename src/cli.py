@@ -41,6 +41,7 @@ OPTIONS_MESSAGE = \
 	"-fn (first name)\n" + \
 	"-ln (last name)\n" + \
 	"-a (address)\n" + \
+	"-a2 (address line 2)\n" + \
 	"-c (city)\n" + \
 	"-s (state)\n" + \
 	"-z (ZIP Code)\n" + \
@@ -64,12 +65,13 @@ MALFORMED_DATA_MESSAGE = \
 	"*** Please try again."
 
 VALID_OPTIONS = ("add", "edit", "delete", "display", "display_mail", "sort", "open", "save", "save_as", "import", "export", "options", "help", "quit")
-VALID_FLAGS = ("-fn", "-ln", "-a", "-c", "-s", "-z", "-e")
+VALID_FLAGS = ("-fn", "-ln", "-a", "-a2", "-c", "-s", "-z", "-e")
 
 CONTACT_FIELDS = [
 	('fname', 'First Name', '-fn'),
 	('lname', '*Last Name', '-ln'),
 	('address', 'Address', '-a'),
+	('address2', 'Address 2nd Line', '-a'),
 	('city', 'City', '-c'),
 	('state', 'State', '-s'),
 	('zipcode', 'ZIP Code', '-z'),
@@ -82,6 +84,7 @@ FIELD_VALIDATORS = {
 	'fname' : validate.validate_name,
 	'lname' : validate.validate_name,
 	'address' : validate.validate_address,
+	'address2' : validate.validate_address2,
 	'city' : validate.validate_city,
 	'state' : validate.validate_state,
 	'zipcode' : validate.validate_zip,
@@ -144,6 +147,7 @@ class CommandLineInterface(Cmd):
 	-fn (first name)
 	-ln (last name)
 	-a (address)
+	-a2 (address line 2)
 	-c (city)
 	-s (state)
 	-z (ZIP Code)
@@ -162,7 +166,7 @@ class CommandLineInterface(Cmd):
 	def do_prepop_book(self, line):
 		# TODO this is for testing, should be removed for final product
 		a = Contact()
-		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'super@man.com')
+		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com')
 		b = Contact()
 		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com')
 		c = Contact()
