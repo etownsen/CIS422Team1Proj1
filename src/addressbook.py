@@ -26,7 +26,7 @@ class Contact(object):
         Initialize a Contact object which is an entry in the address book.
         """
         for attr in Contact.default_attrs:
-            setattr(self, attr, "a")
+            setattr(self, attr, '')
         
     def testing(self, fname='', lname='', address='', city='', state='',
                  zipcode='', phone='', email='', address2=''):
