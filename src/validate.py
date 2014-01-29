@@ -38,6 +38,18 @@ def validate_address(address):
         return False, msg
     return True, ""
 
+def validate_address2(address2):
+    """
+    Match everything as name, with the addition of numbers, dashes,
+    colons, periods, pound signs, and spaces.
+    """
+    if address2==None: return False, ""
+    valid = re.match(r'^$|^[A-Za-z \.#:-]+[0-9A-Za-z:-]+$', address2)
+    if not valid:
+        msg = "The address line 2 you entered is invalid.\nPlease try again."
+        return False, msg
+    return True, ""
+
 def validate_city(city):
     """
     Match everything as name, but with spaces and numbers.
