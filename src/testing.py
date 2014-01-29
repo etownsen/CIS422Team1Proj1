@@ -1,6 +1,7 @@
 
 from validate import (validate_name,validate_city, validate_state, 
 validate_address, validate_zip, validate_email, validate_email, validate_phone)
+from addressbook import Contact, AddressBook
 
 
 def test_validate():
@@ -44,8 +45,44 @@ def test_validate():
     print 'phone F: 541555444', validate_phone('541555444')
  
 
+def test_addressbook():
+    a = Contact()
+    a2 = Contact()
+    a2.testing('fname', 'lname', '10 a st', 'eugene', 'or',
+                 '97401', '541', 'a@a.com', 'apt 10')
+    b = Contact()
+    b.testing('bbb', 'john', '20 b st', 'Eugene', 'OR', '97402', '54535', 'b@b.com')
+    c = Contact()
+    c.testing('ccc', 'CCC', '30 c st', 'Eugene', 'OR', '97403', '541', 'c@c.com')
+    b2 = Contact()
+    b2.testing('bbb', 'BBB', '20 b st', '', 'OR', '97404', '541', 'b@b.com')
+    arr = [a2, b, c, b2, a]
+    ab = AddressBook(arr)
+    print ab
+    # ab.add(a)
+    # ab.add(b)
+    # ab.add(c)
+    # ab.add(arr)
+    #print ab
+    # print ab.print_all_mailing()
+    #res = ab.search('email', 'a@a.com')
+    #print str(res[0][1])
+    #res2 = ab.search('zipcode', '97404', res)
+    #print res2
+    #ab.sort(['lname', 'zipcode'])
+    #utils.save_ab(ab, ab.name)
+    #ab2 = utils.open_ab('mybook')
+    #print ab2.print_all_mailing()
+    #ab.delete(10)
+#     ab.export_contacts('f.tsv')
+#     ab3 = AddressBook()
+#     ab3.import_contacts('f.tsv')
+#     print ab3
+
+
 def main():
     test_validate()
+    test_addressbook()
 
 if __name__ == "__main__":
     main()
