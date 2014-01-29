@@ -181,13 +181,17 @@ class CommandLineInterface(Cmd):
 			try:
 				data = None
 				if field[0] in REQUIRED_FIELDS:
-					while getattr(new_contact, field[0], '')=='' or not valid(data):
+					while getattr(new_contact, field[0], '')=='' or not valid(data)[0]:
 						data = raw_input("{0}: ".format(field[1]))
 						setattr(new_contact, field[0], data)
+						if not valid(data)[0]:
+							print valid(data)[1]
 				else:
-					while not valid(data):
+					while not valid(data)[0]:
 						data = raw_input("{0}: ".format(field[1]))
 						setattr(new_contact, field[0], data)
+						if not valid(data)[0]:
+							print valid(data)[1]
 			
 			except KeyboardInterrupt:
 				print "\nCancelling New Contact\n"
@@ -240,7 +244,7 @@ class CommandLineInterface(Cmd):
 				try:
 					new_data = None
 					old_data = getattr(contact[1], field[0], '')
-					while not valid(new_data):
+					while not valid(new_data)[0]:
 						user_input = raw_input("{0}: {1}".format(field[1], old_data) + chr(8)*len(old_data))
 						# NOTE: 8 is the ASCII value of backspace
 						if not user_input:
@@ -257,6 +261,8 @@ class CommandLineInterface(Cmd):
 								new_data.extend(user_input[i:])
 								break
 						new_data = ''.join(new_data)
+						if not valid(new_data)[0]:
+							print valid(new_data)[1]
 
 					# Update the temp Contact Info
 					setattr(temp, field[0], new_data)
