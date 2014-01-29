@@ -74,10 +74,10 @@ def test_addressbook():
     #ab2 = utils.open_ab('mybook')
     #print ab2.print_all_mailing()
     #ab.delete(10)
-#     ab.export_contacts('f.tsv')
-#     ab3 = AddressBook()
-#     ab3.import_contacts('f.tsv')
-#     print ab3
+    ab.export_contacts('f.tsv')
+    ab3 = AddressBook()
+    ab3.import_contacts('f.tsv')
+    print ab3
 
 
 def main():

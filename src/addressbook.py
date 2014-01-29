@@ -18,15 +18,15 @@ class Contact(object):
     A class representing a single entry in the address book.
     """
     
-    default_attrs = ['fname', 'lname', 'address', 'city', 'state',
-                          'zipcode', 'phone', 'email', 'address2']
+    default_attrs = ['fname', 'lname', 'address', 'address2', 'city',
+                     'state', 'zipcode', 'phone', 'email']
     
     def __init__(self):
         """
         Initialize a Contact object which is an entry in the address book.
         """
         for attr in Contact.default_attrs:
-            setattr(self, attr, "a")
+            setattr(self, attr, "")
         
     def testing(self, fname='', lname='', address='', city='', state='',
                  zipcode='', phone='', email='', address2=''):
@@ -199,14 +199,3 @@ class AddressBook(object):
         #res = '\n'.join(res).upper()
         with open(file_name, 'wb') as f:
             f.write(res)
-
-
-def main():
-    """
-    Testing...
-    """
-
-
-
-if __name__ == "__main__":
-    main()

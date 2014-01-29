@@ -94,7 +94,7 @@ def validate_phone(phone):
     1112223333 or (111)222-3333 or 111-222-3333.
     """
     if phone==None: return False, ""
-    valid = re.match('^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$', phone)
+    valid = re.match('^$|^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$', phone)
     if not valid:
         msg = "The phone number you entered is invalid.\nPlease try again " + \
         "using 10 digits in one of the following formats:\n" + \
