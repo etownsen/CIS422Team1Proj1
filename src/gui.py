@@ -176,7 +176,7 @@ class GUI(Frame):
         	
 
 	def sub_fill_book(self, subset):
-		SCROLLAREA_HEIGHT = (BOX_HEIGHT + ROW_PAD)*int(math.ceil(self.addressbook.total/3.0)) + ROW_PAD
+		SCROLLAREA_HEIGHT = (BOX_HEIGHT + ROW_PAD)*int(math.ceil(len(subset)/3.0)) + ROW_PAD
 		self.canvas.config(scrollregion=(0,0,SCROLLAREA_WIDTH, SCROLLAREA_HEIGHT))
 		
 		if len(subset) == 0:
