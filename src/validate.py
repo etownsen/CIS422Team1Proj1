@@ -34,7 +34,7 @@ def validate_address(address):
     valid = re.match(r'^$|^[0-9]+[0-9A-Za-z \.#:-]+$', address)
     if not valid:
         msg = "The address you entered is invalid.\nPlease try " + \
-        "again using the standard address format i.e. 1500 main st."
+        "again using the standard address format e.g. 1500 main st."
         return False, msg
     return True, ""
 
