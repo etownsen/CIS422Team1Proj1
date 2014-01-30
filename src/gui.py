@@ -26,9 +26,10 @@ root=Tk()
 SCROLLAREA_WIDTH = 700
 ROW_PAD = 20
 COLUMN_PAD = 20
-BOX_HEIGHT = 270
+BOX_HEIGHT = 240
 BOX_WIDTH = 300
 BOX_COLOR = '#ebebeb'
+BOX_HIGHLIGHT = '#ffffff'
 TEXT_WIDTH = BOX_WIDTH-40
 
 
@@ -45,7 +46,10 @@ def combine_funcs(*funcs):
 
 class GUI(Frame):
 	"""Main class which represents our parent window for the GUI."""
+	
 	def __init__(self, parent):
+		"""Initiates the window, with the appropriate grid layout, buttons,
+			Canvas and scroll bar. All class-wide variables defined here."""
 		Frame.__init__(self, parent, background="#ffffff")
 		self.parent = parent
 		
@@ -54,47 +58,51 @@ class GUI(Frame):
 		self.tempvars = []	#Temporary values for add and editing fields
 		self.tempID = -1	#TemporaryID number for contact
 		self.tempFile = None	#Temporary File for import/export
+		self.mL = 0		#Mailing label flag
 		
 		# Some formatting for the grid layout
 		self.grid_rowconfigure(1, weight=1)
-		self.grid_columnconfigure(0, weight=0)
+		self.grid_columnconfigure(0, weight=2)
 		self.grid_columnconfigure(1, weight=0)
 		self.grid_columnconfigure(2, weight=0)
-		self.grid_columnconfigure(3, weight=7)
-		self.grid_columnconfigure(4, weight=2)
+		self.grid_columnconfigure(3, weight=0)
+		self.grid_columnconfigure(4, weight=7)
+
+		#Logo Column
+		logo = PhotoImage(file="logo.gif")
+		imgCan = Label(self, image=logo)
+		imgCan.image = logo
+		imgCan.grid(sticky = N+W, row = 0, column = 0, padx=0)	
 		
 		# Add Button
 		img1 = PhotoImage(file="add.gif")
 		addBtn = Button(self, image= img1, command = self.clickAdd)
 		addBtn.image = img1
-		addBtn.grid(sticky = N+W, row = 0, column = 0, ipadx=0, padx=3, ipady=0, pady=3)
+		addBtn.grid(sticky = N+W, row = 0, column = 1, ipadx=5, padx=3, ipady=5, pady=8)
 		
 		# Edit Button
 		img2 = PhotoImage(file="edit.gif")
 		editBtn = Button(self, image=img2, command = self.clickEdit)
 		editBtn.image = img2
-		editBtn.grid(sticky = N+W, row = 0, column = 1, ipadx=0, padx=3, ipady=0, pady=3)
+		editBtn.grid(sticky = N+W, row = 0, column = 2, ipadx=5, padx=3, ipady=5, pady=8)
 
 		#Delete Button
 		img3 = PhotoImage(file="delete.gif")
 		delBtn = Button(self, image=img3, command = self.clickDelete)
 		delBtn.image = img3
-		delBtn.grid(sticky = N+W, row = 0, column = 2, ipadx=0, padx=3, ipady=0, pady=3)
-		
-		#Empty column
-		self.grid(row = 0, column = 3, padx=20)
+		delBtn.grid(sticky = N+W, row = 0, column = 3, ipadx=5, padx=3, ipady=5, pady=8)
 		
 		#Search Box Input
 		self.searchBox = Entry(self, relief=SUNKEN, border=2, width=20)
-		self.searchBox.grid(sticky = N+E, row = 0, column = 4, padx=2, pady=5)
+		self.searchBox.grid(sticky = N+E, row = 0, column = 4, padx=2, pady=20)
 
 		#Search Button
 		searchBtn = Button(self, text="Search", command = self.clickSearch)
-		searchBtn.grid(sticky = N+E, row = 0, column = 5, padx=0, pady=5)
+		searchBtn.grid(sticky = N+E, row = 0, column = 5, padx=0, pady=20)
 		
 		#Return to view the full book Button
 		search2Btn = Button(self, text="View Full Book", command = self.update)
-		search2Btn.grid(sticky = N+E, row = 0, column = 6, padx=0, pady=5)
+		search2Btn.grid(sticky = N+E, row = 0, column = 6, padx=0, pady=20)
 		
 		#Main addressbook!
 		self.addressbook = AddressBook()
@@ -120,14 +128,14 @@ class GUI(Frame):
 
 
 	def initUI(self):
-		"""Setup the window and display it""" 
+		"""Setup the window and display it.""" 
 		self.parent.title("Blue Book")
 		self.pack(fill=BOTH, expand=1)
 
 	
 
 	def get_tagged_box(self, tag):
-		"""Search through Canvas objects by tags, return the rectangle with the given tag"""
+		"""Search through Canvas objects by tags, return the rectangle with the given tag."""
 		id, = self.canvas.find_withtag(tag)
 		tags = self.canvas.gettags(tag)
 		if 'text' in tags: #if the current item is text
@@ -137,7 +145,8 @@ class GUI(Frame):
 
 
 	def boxClicked(self, event):
-		"""Give the rectangle the 'select' state when clicked, and the highlight properties"""
+		"""Give the rectangle the 'select' tag when clicked, and the highlight properties
+			(outline and white background."""
 		id = self.get_tagged_box('current')
 		tags = self.canvas.gettags(id)
 		for t in tags:
@@ -145,19 +154,33 @@ class GUI(Frame):
 				self.canvas.dtag(id, 'select')
 				self.canvas.itemconfigure(id, width=0, fill=BOX_COLOR)
 				return
-
 		for en in self.canvas.find_withtag("select"):
 			if (en != id): #Cycle through and make sure only one is selected at a time.
 				self.canvas.dtag(en, 'select')
 				self.canvas.itemconfigure(en, width=0, fill=BOX_COLOR)
 		#Select the current box.
 		self.canvas.addtag('select', 'withtag', id)
-		self.canvas.itemconfigure(id, width=2, outline="#65c3f3", fill="#FFFFFF")
+		self.canvas.itemconfigure(id, width=2, outline="#58a4cd", fill=BOX_HIGHLIGHT)
+
+
+	def hover(self, event):
+		"""Binding for when the user hovers over a rectangle. Changes the cursor."""
+		id = self.get_tagged_box('current')
+		self.config(cursor="pointinghand")
+
+
+
+	def no_hover(self,event):
+		"""Binding for when the user stops hovering over a rectangle. Changes the cursor."""
+		id = self.get_tagged_box('current')
+		self.config(cursor="")
 
 
 
 	def fill_book(self, subset):
-		"""Fill the Canvas with the info from adresses from the subset provided."""
+		"""Fill the Canvas with the info from adresses from the subset provided.
+			for each entry add a rectangle to the canvas, and the associated address text within
+			the rectangle. Bind these boxes to the boxClicked() function."""
 		SCROLLAREA_HEIGHT = (BOX_HEIGHT + ROW_PAD)*int(math.ceil(len(subset)/3.0)) + ROW_PAD
 		self.canvas.config(scrollregion=(0,0,SCROLLAREA_WIDTH, SCROLLAREA_HEIGHT))
 		
@@ -183,9 +206,8 @@ class GUI(Frame):
 				#If the index number exists in the addressbook
 				if (idn < self.addressbook.total):
 					#Create rectangle
-					id = self.canvas.create_rectangle(x, y, x+BOX_WIDTH, y+BOX_HEIGHT, fill=BOX_COLOR, width=0, tags=('box', idn )) 
+					id = self.canvas.create_rectangle(x, y, x+BOX_WIDTH, y+BOX_HEIGHT, fill=BOX_COLOR, width=0, tags=('box', idn)) 
 					con = ""
-					
 					#Generate Text
 					for field in CONTACT_FIELDS:
 						#Check for subset
@@ -196,9 +218,15 @@ class GUI(Frame):
 							
 						if (getattr(entry, field[0], '') != ""):
 							con += field[1] + ": " + str(getattr(entry, field[0], '') + "\n")
-					self.canvas.create_text(x+20, y+20, anchor='nw', text=con, tags='text', width=TEXT_WIDTH)
+					#Check for Mailing Label Display
+					if (self.mL):
+						self.canvas.create_text(x+20, y+20, anchor='nw', text=entry.print_mailing(), tags='text', width=TEXT_WIDTH)
+					else:
+						self.canvas.create_text(x+20, y+20, anchor='nw', text=con, tags='text', width=TEXT_WIDTH)
 				idn+= 1 #Increment ID Number
         	self.canvas.tag_bind('all', '<1>', self.boxClicked) #Check when box is clicked
+        	self.canvas.tag_bind('all', '<Any-Enter>', self.hover) #Check when box is hovered over
+        	self.canvas.tag_bind('all', '<Any-Leave>', self.no_hover) #Check when box is not hovered over
 
 
 
@@ -221,13 +249,16 @@ class GUI(Frame):
 
 
 	
-	def sort(self):
+	def sort(self, att):
 		"""Sort the addresses by last name. This search function only works
 			on the full addressbook, not a subset, sort before searching."""
 		#If we are not viewing search results, sort entire book
 		if (self.addressbook.total == 0):
 			return
-		self.addressbook.sort()
+		attrs = []
+		attrs.append(att)
+		attrs.extend(['lname', 'fname'])
+		self.addressbook.sort(attributes=attrs)
 		self.update()
 
 
@@ -266,25 +297,39 @@ class GUI(Frame):
 			e.grid(row=count,column=1, columnspan=3, sticky=W, padx=10, pady=3)
 			self.tempvars.append(e)
 			count += 1
-		ok = Button(toplevel, text="Submit", command=combine_funcs(self.addEntry, toplevel.destroy))
+		ok = Button(toplevel, text="Submit", command= lambda: self.addEntry(toplevel))
 		can = Button(toplevel, text="Cancel", command=toplevel.destroy)
 		can.grid(row=count,column=2, sticky=W, padx=0, pady=10)
 		ok.grid(row=count,column=1, sticky=W, padx=0, pady=10)
 		
 
-	def addEntry(self):
+	def addEntry(self, top):
 		"""Get all of the fields entered by the user in the toplevel window
 			Add the new contact object to the address book and update the canvas."""
 		new_contact = Contact()
 		count = 0
+		go = 1
 		for field in CONTACT_FIELDS:
-			data = self.tempvars[count].get()
-			setattr(new_contact, field[0], data)
-			"""if (not valid):
-				tkMessageBox.showinfo("Input error", "Something was invalid")"""
+			valid = FIELD_VALIDATORS[field[0]]
+			if field[0] in REQUIRED_FIELDS:
+				data = self.tempvars[count].get()
+				if data == "":
+					tkMessageBox.showinfo("Required Field Error", field[1] + " is a required field, please enter this info into the input box.")
+					go = 0
+					break
+				if(go): setattr(new_contact, field[0], data)
+			else:
+				data = self.tempvars[count].get()
+				if data != "" and not valid(data)[0]:
+					tkMessageBox.showinfo("Input Error", valid(data)[1])
+					go = 0
+					break
+				if(go): setattr(new_contact, field[0], data)
 			count += 1
-		self.addressbook.add(new_contact)
-		self.update()
+		if(go):
+			self.addressbook.add(new_contact)
+			self.update()
+			top.destroy()
 		
 
 
@@ -337,13 +382,13 @@ class GUI(Frame):
 			e.grid(row=count,column=1, columnspan=3, sticky=W, padx=10, pady=3)
 			self.tempvars.append(e) # add the values so we can .get() them later
 			count += 1
-		ok = Button(toplevel, text="Submit", command=combine_funcs(self.editEntry, toplevel.destroy))
+		ok = Button(toplevel, text="Submit", command=lambda: self.editEntry(toplevel))
 		can = Button(toplevel, text="Cancel", command=toplevel.destroy)
 		can.grid(row=count,column=2, sticky=W, padx=0, pady=10)
 		ok.grid(row=count,column=1, sticky=W, padx=0, pady=10)
 		
 
-	def editEntry(self):
+	def editEntry(self, top):
 		"""Edit the entry id in self.tempID. Update all of the fields, and update the
 			Canvas to reflect these changes."""
 		if (self.tempID >= 0):
@@ -355,18 +400,30 @@ class GUI(Frame):
 				en = self.searchState[self.tempID][1]
 			
 			count = 0
+			go = 1
 			for field in CONTACT_FIELDS:
-				data = self.tempvars[count].get()
-				if (data != ""):
-					setattr(en, field[0], data)
-				"""if (not valid):
-					tkMessageBox.showinfo("Input error", "Something was invalid")"""
+				valid = FIELD_VALIDATORS[field[0]]
+				if field[0] in REQUIRED_FIELDS:
+					data = self.tempvars[count].get()
+					if data == "":
+						tkMessageBox.showinfo("Required Field Error", field[1] + " is a required field, please enter this info into the input box.")
+						go = 0
+						break
+					if(go): setattr(en, field[0], data)
+				else:
+					data = self.tempvars[count].get()
+					if data != "" and not valid(data)[0]:
+						tkMessageBox.showinfo("Input Error", valid(data)[1])
+						go = 0
+						break
+					if(go): setattr(en, field[0], data)
 				count += 1
-			
-			if (self.searchState is None):
-				self.update()
-			else:
-				self.updateSearchState()
+			if (go):
+				if (self.searchState is None):
+					self.update()
+				else:
+					self.updateSearchState()
+				top.destroy()
 			
 		else: 
 			tkMessageBox.showinfo("Input error", "The ID of the contact is invalid, please delete and re-add this contact")
@@ -400,7 +457,6 @@ class GUI(Frame):
 			return
 		self.tempID = i; #Gloabl ID
 
-
 		con = ""
 		for field in CONTACT_FIELDS:
 			#Special case for  searchState subset
@@ -422,38 +478,67 @@ class GUI(Frame):
 			else:
 				self.updateSearchState()
 
-	
+
+
+	def mailLabels(self):
+		"""View the contact information in a mailing label format.
+			Update the canvas to display new format"""
+		self.mL = 1
+		if (self.searchState is None):
+			self.update()
+		else:
+			self.updateSearchState()
+
+
+
+	def noMailLabels(self):
+		"""View the contact information in the regular format.
+			Update the canvas to display new format"""
+		self.mL = 0
+		if (self.searchState is None):
+			self.update()
+		else:
+			self.updateSearchState()
+			
+			
 
 	def new(self):
 		"""Create a new blank address book, ask to save before creating new book.
 			Update the Canvas with the new book."""
 		self.tempFile = None
-		if tkMessageBox.askyesno("New Address Book", "Are you sure you want to create a new file? \n (Remember to save your Address Book first)"):
-			self.addressbook.contacts = []
-			self.addressbook.total = 0
-			self.update()
+		if tkMessageBox.askyesno("New Address Book", "Do you want to save your current file first?"):
+			self.export()
+		self.addressbook.contacts = []
+		self.addressbook.total = 0
+		self.update()
 
 
 			
 	def open(self):
 		"""Open a new address book. while closing the old one Use the import function to get the new file.
 			Update the Canvas with the new book."""
-		if tkMessageBox.askyesno("New Address Book", "Are you sure you want to open a new file? \n (Remember to save your Address Book first)"):
-			self.addressbook.contacts = []
-			self.addressbook.total = 0
-			self.update()
-			self.imp()
+		self.tempFile = None
+		if tkMessageBox.askyesno("Open Address Book", "Do you want to save your current file first?"):
+			self.export()
+		self.addressbook.contacts = []
+		self.addressbook.total = 0
+		self.update()
+		self.imp()
 
 
 
 	def close(self):
 		"""Close an  address book. while closing the old one Use the import function to get the new file.
 			Update the Canvas with the new book."""
-		if tkMessageBox.askyesno("New Address Book", "Are you sure you want to close this address book? \n (Remember to save your Address Book first)"):
-			self.addressbook.contacts = []
-			self.addressbook.total = 0
-			self.update()
-		
+		self.tempFile = None
+		if tkMessageBox.askyesno("Close Address Book", "Do you want to save your current file first?"):
+			self.export()
+		self.addressbook.contacts = []
+		self.addressbook.total = 0
+		self.update()
+
+
+
 	def imp(self):
 		"""Import a new address from a .tsv file. Prompt the user to select a file,
 			update the Canvas with the imported addressbook"""	
@@ -479,20 +564,26 @@ class GUI(Frame):
 		self.addressbook.export_contacts(f.name)
 
 	def save(self):
+		"""Automatic save function. If user has already saved the file. Refers to the
+			export function."""
 		if (self.tempFile is None):
 			self.export()
 		else:
 			self.addressbook.export_contacts(self.tempFile)
 
 def main():
+	"""Create the GUI class with the root window. Configure the
+		menu bars."""
 	root.geometry("250x150+300+300")
 	app = GUI(root)
 
 	menubar = Menu(root)
+	
+	# File Menu
 	filemenu = Menu(menubar, tearoff=0)
 	filemenu.add_command(label="New", command=app.new)
 	filemenu.add_command(label="Open", command=app.open)
-	filemenu.add_command(label="Close", command=app.new)
+	filemenu.add_command(label="Close", command=app.close)
 	filemenu.add_command(label="Save", command=app.save)
 	filemenu.add_command(label="Save As...", command=app.export)
 	filemenu.add_separator()
@@ -502,16 +593,25 @@ def main():
 	filemenu.add_command(label="Quit", command=root.quit)
 	menubar.add_cascade(label="File", menu=filemenu)
 	
+	# Edit Menu
 	filemenu2 = Menu(menubar, tearoff=1)
 	filemenu2.add_command(label="Add", command=app.clickAdd)
 	filemenu2.add_command(label="Edit", command=app.clickEdit)
 	filemenu2.add_command(label="Delete", command=app.clickDelete)
 	submenu = Menu(filemenu2)
-	submenu.add_command(label="Last Name", command=app.sort)
-	submenu.add_command(label="ZIP Code")
+	submenu.add_command(label="First Name", command= lambda: app.sort('fname'))
+	submenu.add_command(label="Last Name", command= lambda: app.sort('lname'))
+	submenu.add_command(label="City", command= lambda: app.sort('city'))
+	submenu.add_command(label="State", command= lambda: app.sort('state'))
+	submenu.add_command(label="ZIP Code", command= lambda: app.sort('zipcode'))
+
+	submenu2 = Menu(filemenu2)
+	submenu2.add_command(label="Mailing Labels", command=app.mailLabels)
+	submenu2.add_command(label="Full Contact Info", command=app.noMailLabels)
 	
 	menubar.add_cascade(label="Edit", menu=filemenu2)
-	filemenu2.add_cascade(label='Sort By...', menu=submenu, underline=0)	
+	filemenu2.add_cascade(label='Sort By...', menu=submenu, underline=0)
+	filemenu2.add_cascade(label='View', menu=submenu2, underline=0)
 	
 	root.config(menu=menubar)    
 	
