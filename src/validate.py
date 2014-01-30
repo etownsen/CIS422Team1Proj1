@@ -83,6 +83,7 @@ def validate_state(state):
      'VERMONT','VT', 'VIRGINIA','VA', 'WASHINGTON','WA', 'WEST VIRGINIA','WV',
      'WISCONSIN','WI', 'WYOMING','WY']
     if state==None: return False, ""
+    if state=='': return True, ""
     if state.upper() not in states:
         msg = "The state name you entered is invalid.\nPlease try again."
         return False, msg
