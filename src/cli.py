@@ -45,6 +45,7 @@ OPTIONS_MESSAGE = \
 	"-c (city)\n" + \
 	"-s (state)\n" + \
 	"-z (ZIP Code)\n" + \
+	"-p (phone number)\n" + \
 	"-e (email)\n"
 
 EDIT_AND_DELETE_NEED_ARGS = \
@@ -71,7 +72,7 @@ CONTACT_FIELDS = [
 	('fname', 'First Name', '-fn'),
 	('lname', '*Last Name', '-ln'),
 	('address', 'Address', '-a'),
-	('address2', 'Address 2nd Line', '-a'),
+	('address2', 'Address 2nd Line', '-a2'),
 	('city', 'City', '-c'),
 	('state', 'State', '-s'),
 	('zipcode', 'ZIP Code', '-z'),
@@ -151,6 +152,7 @@ class CommandLineInterface(Cmd):
 	-c (city)
 	-s (state)
 	-z (ZIP Code)
+	-p (phone number)
 	-e (email)
 
 	"""
