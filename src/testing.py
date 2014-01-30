@@ -1,8 +1,7 @@
-
 from validate import (validate_name,validate_city, validate_state, 
 validate_address, validate_zip, validate_email, validate_email, validate_phone)
 from addressbook import Contact, AddressBook
-
+import utils
 
 def test_validate():
     print 'name T: evan', validate_name('evan')
@@ -45,46 +44,13 @@ def test_validate():
     print 'phone T: (541) 555-4444', validate_phone('(541) 555-4444')
     print 'phone F: 541555444', validate_phone('541555444')
  
-
 def test_addressbook():
-    a = Contact()
-    a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '541', 'Super@man.com', 'apt#1')
-    b = Contact()
-    b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '541', 'malemodel@ballz.com', 'apt#2')
-    c = Contact()
-    c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '', '541', 'bro@uoregon.edu', 'apt#3')
-    arr = [b, c, a]
-    ab = AddressBook(arr)
-    d = Contact()
-    d.testing('343', 'Cb', '30 c st', 'Eugene', '', '97401', '541', 'bro@uoregon.edu', 'apt#3')
-    e = Contact()
-    e.testing('Jason', 'ca', '30 c st', '', 'OR', '97403', '541', 'bro@uoregon.edu')
-#     print e
-#     e.merge_contact(d)
-#     print e
-    #print ab
-    ab.add([d,e])
-    ab2 = AddressBook([d,e])
-    #ab.merge_addressbook(ab2)
-    #print ab.total
-    #ab.add([d,e])
-    ab.sort(['fname', 'lname'])
-    print set([a,b,c,d,e])
-    res = ab.search('fname', 'jason')
-    for c in res:print str(c[1]) 
-    print
-    res = ab.search('lname', 'dines', res)
-    for c in res:print str(c[1]) 
-    print
-    
-    #utils.save_ab(ab, 'mybook')
-    #ab2 = utils.open_ab('mybook')
-    #print ab2.print_all_mailing()
-    ab.export_contacts('f.tsv')
-    ab3 = AddressBook()
-    ab3.import_contacts('f.tsv')
-    print ab3
-
+    ab = utils.open_addressbook('mybook')
+    print ab
+    ab.sort(['fname', 'lname']) 
+    ab2 = AddressBook()
+    ab2.import_contacts('Handsome')
+    print ab2
 
 def main():
     #test_validate()

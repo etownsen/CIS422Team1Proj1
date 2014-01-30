@@ -25,7 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Blue Book 1.0 documentation" href="index.html" />
     <link rel="up" title="src" href="modules.html" />
-    <link rel="next" title="cli module" href="cli.html" />
+    <link rel="next" title="utils module" href="utils.html" />
     <link rel="prev" title="src" href="modules.html" /> 
   </head>
   <body>
@@ -39,7 +39,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="cli.html" title="cli module"
+          <a href="utils.html" title="utils module"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="src"
@@ -69,14 +69,15 @@ CIS 422, W&#8216;14, University of Oregon.</p>
 </table>
 <dl class="class">
 <dt id="addressbook.AddressBook">
-<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">AddressBook</tt><big>(</big><em>contacts=</em>, <span class="optional">[</span><span class="optional">]</span><em>name='bluebook.pk'</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook" title="Permalink to this definition">¶</a></dt>
-<dd><p>A simple personal address book. Holds a list of Contact objects
+<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">AddressBook</tt><big>(</big><em>contacts=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#addressbook.AddressBook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A simple personal address book. Holds a list of Contact objects
 and provides multiple functionalities to handle them.</p>
 <dl class="method">
 <dt id="addressbook.AddressBook.add">
 <tt class="descname">add</tt><big>(</big><em>entry</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add an entry to the address book given a single Contact
-or a list of Contacts.</p>
+or a list of Contacts. Store the abbreviation of the states.</p>
 </dd></dl>
 
 <dl class="method">
@@ -84,18 +85,46 @@ or a list of Contacts.</p>
 <tt class="descname">delete</tt><big>(</big><em>index</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.delete" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove an entry from the address book given its index. The index
 is returned by the search method.</p>
+<div class="line-block">
+<div class="line">Raises IndexError if index is not in the list.</div>
+</div>
 </dd></dl>
 
 <dl class="method">
 <dt id="addressbook.AddressBook.export_contacts">
 <tt class="descname">export_contacts</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.export_contacts" title="Permalink to this definition">¶</a></dt>
-<dd><p>NOT FINISHED.</p>
+<dd><p>Export the contacts list to a tsv file.
+The format of the file is as follows:</p>
+<div class="line-block">
+<div class="line">Last&lt;tab&gt;Delivery&lt;tab&gt;Second&lt;tab&gt;Recipient&lt;tab&gt;Phone&lt;NL&gt;</div>
+<div class="line">followed by a list of contacts with the same format.</div>
+</div>
+<p>Raises IOError if file exist and has no write permission.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="addressbook.AddressBook.import_contacts">
 <tt class="descname">import_contacts</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.import_contacts" title="Permalink to this definition">¶</a></dt>
-<dd><p>NOT FINISHED.</p>
+<dd><p>Import a contacts list from a tsv file.
+The format of the file is as follows:</p>
+<div class="line-block">
+<div class="line">Last&lt;tab&gt;Delivery&lt;tab&gt;Second&lt;tab&gt;Recipient&lt;tab&gt;Phone&lt;NL&gt;</div>
+<div class="line">followed by a list of contacts with the same format.</div>
+</div>
+<p>Raises IOError if file is not found or has no read permission.</p>
+<div class="line-block">
+<div class="line">Raises Error if file is not a standard tsv file.</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="addressbook.AddressBook.merge_addressbook">
+<tt class="descname">merge_addressbook</tt><big>(</big><em>address_book</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.merge_addressbook" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>NOT FULLY TESTED.</strong></p>
+<div class="line-block">
+<div class="line">Combine two address books and merge Contacts that have the same</div>
+</div>
+<p>first and last name.</p>
 </dd></dl>
 
 <dl class="method">
@@ -107,10 +136,10 @@ in the standard mailing label format.</p>
 
 <dl class="method">
 <dt id="addressbook.AddressBook.search">
-<tt class="descname">search</tt><big>(</big><em>attribute</em>, <em>value</em>, <em>list=None</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.search" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">search</tt><big>(</big><em>attribute</em>, <em>value</em>, <em>search_list=None</em><big>)</big><a class="headerlink" href="#addressbook.AddressBook.search" title="Permalink to this definition">¶</a></dt>
 <dd><p>Search the address book for all entries with a given attribute
-and its value. This method can be called multiple times passing the result
-from each call as the third argument to narrow the search.</p>
+and its value. This method can be called multiple times passing
+the result from each call as the third argument to narrow the search.</p>
 </dd></dl>
 
 <dl class="method">
@@ -119,14 +148,23 @@ from each call as the third argument to narrow the search.</p>
 <dd><p>Sort the address book by the given list of attributes. The first
 attribute is used and ties are broken using the next attributes in
 the list.</p>
+<div class="line-block">
+<div class="line">Raises AttributeError if one of the attributes does not exist.</div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="addressbook.Contact">
-<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">Contact</tt><big>(</big><em>fname=''</em>, <em>lname=''</em>, <em>address=''</em>, <em>city=''</em>, <em>state=''</em>, <em>zipcode=''</em>, <em>phone=''</em>, <em>email=''</em>, <em>address2=''</em><big>)</big><a class="headerlink" href="#addressbook.Contact" title="Permalink to this definition">¶</a></dt>
-<dd><p>A class representing a single entry in the address book.</p>
+<em class="property">class </em><tt class="descclassname">addressbook.</tt><tt class="descname">Contact</tt><a class="headerlink" href="#addressbook.Contact" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A class representing a single entry in the address book.</p>
+<dl class="attribute">
+<dt id="addressbook.Contact.default_attrs">
+<tt class="descname">default_attrs</tt><em class="property"> = ['fname', 'lname', 'address', 'address2', 'city', 'state', 'zipcode', 'phone', 'email']</em><a class="headerlink" href="#addressbook.Contact.default_attrs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="addressbook.Contact.get_filtered_info">
 <tt class="descname">get_filtered_info</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.Contact.get_filtered_info" title="Permalink to this definition">¶</a></dt>
@@ -144,6 +182,15 @@ Useful when Contact has empty fields.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="addressbook.Contact.merge_contact">
+<tt class="descname">merge_contact</tt><big>(</big><em>other</em><big>)</big><a class="headerlink" href="#addressbook.Contact.merge_contact" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>NOT FULLY TESTED.</strong></p>
+<div class="line-block">
+<div class="line">Merge Contacts that have the same first and last name. </div>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="addressbook.Contact.print_mailing">
 <tt class="descname">print_mailing</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.Contact.print_mailing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a string representation in the standard mailing label format.</p>
@@ -155,11 +202,6 @@ Useful when Contact has empty fields.</p>
 </dd></dl>
 
 </dd></dl>
-
-<dl class="function">
-<dt id="addressbook.main">
-<tt class="descclassname">addressbook.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#addressbook.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </div>
 
@@ -173,8 +215,8 @@ Useful when Contact has empty fields.</p>
   <p class="topless"><a href="modules.html"
                         title="previous chapter">src</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="cli.html"
-                        title="next chapter">cli module</a></p>
+  <p class="topless"><a href="utils.html"
+                        title="next chapter">utils module</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/addressbook.txt"
@@ -207,7 +249,7 @@ Useful when Contact has empty fields.</p>
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="cli.html" title="cli module"
+          <a href="utils.html" title="utils module"
              >next</a> |</li>
         <li class="right" >
           <a href="modules.html" title="src"

@@ -10,6 +10,7 @@
 
 import csv
 import validate
+import utils
 from operator import itemgetter, attrgetter
 
 class Contact(object):
@@ -26,22 +27,6 @@ class Contact(object):
         """
         for attr in Contact.default_attrs:
             setattr(self, attr, '')
-        
-    def testing(self, fname='', lname='', address='', city='', state='',
-                 zipcode='', phone='', email='', address2=''):
-        """
-        Testing constructor that initializes a Contact object given the default
-        attributes.
-        """
-        self.fname = fname
-        self.lname = lname
-        self.address = address
-        self.city = city
-        self.state = state
-        self.zipcode = zipcode
-        self.phone = phone
-        self.email = email
-        self.address2 = address2
 
     def __str__(self):
         """
@@ -82,13 +67,18 @@ class Contact(object):
         """
         name = ' '.join([self.fname, self.lname])
         address = ' '.join([self.address, self.address2])
-        last = ' '.join([self.city, self.state, self.zipcode])
+        last = ' '.join([self.city, self.state.upper(), self.zipcode])
         info = {'name': name, 'delivery': address, 'last': last,
                 'phone': self.phone, 'email': self.email,
                 'address': self.address, 'second': self.address2}
         return {key : value.strip() for key, value in info.iteritems()}
     
     def merge_contact(self, other):
+        """
+        **NOT FULLY TESTED.**
+        
+        | Merge Contacts that have the same first and last name. 
+        """
         for attr in Contact.default_attrs:
             if not getattr(self, attr):
                 setattr(self, attr, getattr(other, attr))
@@ -101,8 +91,10 @@ class AddressBook(object):
     def __init__(self, contacts=[]):
         """
         Initialize an AddressBook object with an empty list
-        or given a list of contacts.
+        or given a list of contacts. Store the abbreviation of the states.
         """
+        for item in contacts:
+            item.state = utils.abbreviate_state(item.state)
         self.contacts = contacts
         self.total = len(contacts)
 
@@ -123,12 +115,15 @@ class AddressBook(object):
     def add(self, entry):
         """
         Add an entry to the address book given a single Contact
-        or a list of Contacts.
+        or a list of Contacts. Store the abbreviation of the states.
         """
         if type(entry) is list:
+            for item in entry:
+                item.state = utils.abbreviate_state(item.state)
             self.contacts += entry
             self.total += len(entry)
         else:
+            entry.state = utils.abbreviate_state(entry.state)
             self.contacts.append(entry)
             self.total += 1
 
@@ -136,7 +131,8 @@ class AddressBook(object):
         """
         Remove an entry from the address book given its index. The index
         is returned by the search method.
-        Raises IndexError if index is not in the list.
+        
+        | Raises IndexError if index is not in the list.
         """
         del self.contacts[index]
         self.total -= 1
@@ -146,7 +142,8 @@ class AddressBook(object):
         Sort the address book by the given list of attributes. The first
         attribute is used and ties are broken using the next attributes in
         the list.
-        Raises AttributeError if one of the attributes does not exist.
+        
+        | Raises AttributeError if one of the attributes does not exist.
         """
         attrs = attrgetter(*attributes)
         self.contacts.sort(key=lambda x: [x.lower() for x in tuple(attrs(x))],
@@ -173,26 +170,35 @@ class AddressBook(object):
         """
         Import a contacts list from a tsv file.
         The format of the file is as follows:
-        Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
-        followed by a list of contacts with the same format.
+        
+        | Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+        | followed by a list of contacts with the same format.
+        
         Raises IOError if file is not found or has no read permission.
+        
+        | Raises Error if file is not a standard tsv file.
         """
         with open(file_name, 'rb') as tsvfile:
             tsv_reader = csv.reader(tsvfile, delimiter='\t', quotechar='|')
             tsv_header = tsv_reader.next()
+            header = ['Last', 'Delivery', 'Second', 'Recipient']
+            if not set(tsv_header) & set(header):
+                raise error('Not a standard tsv')
             for line in tsv_reader:
                 fields = {key.lower() : value.title() for key, value in zip(tsv_header, line)}
                 entry = Contact()
                 
                 if 'last' in fields and fields['last']:
                     last = fields['last'].split()
+                    city = []
                     for value in last:
                         if validate.validate_zip(value)[0]:
                             entry.zipcode = value
                         elif validate.validate_state(value)[0]:
                             entry.state = value
                         else:  
-                            entry.city = value
+                            city.append(value)
+                    entry.city = ' '.join(city)
                 
                 if 'delivery' in fields and fields['delivery']:
                     delivery = fields['delivery']
@@ -228,8 +234,10 @@ class AddressBook(object):
         """
         Export the contacts list to a tsv file.
         The format of the file is as follows:
-        Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
-        followed by a list of contacts with the same format.
+        
+        | Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+        | followed by a list of contacts with the same format.
+        
         Raises IOError if file exist and has no write permission.
         """
         with open(file_name, 'wb') as tsvfile:
@@ -245,7 +253,10 @@ class AddressBook(object):
 
     def merge_addressbook(self, address_book):
         """
-        NOT FULLY TESTED.
+        **NOT FULLY TESTED.**
+        
+        | Combine two address books and merge Contacts that have the same
+        first and last name. 
         """
         self.contacts += address_book.contacts
         self.total += address_book.total
@@ -254,7 +265,6 @@ class AddressBook(object):
         while i < total:
             j = i+1
             while j < total:
-                print i, j, total
                 # Two entries are the same if they have the same name
                 # so merge them together by combining the attributes 
                 if (self.contacts[i].fname == self.contacts[j].fname and
