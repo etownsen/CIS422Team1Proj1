@@ -127,31 +127,33 @@ def get_field_and_args_from_input(line):
 class CommandLineInterface(Cmd):
 	"""
 	VALID COMMANDS:
-	add
-	edit
-	delete
-	display
-	display_mail
-	sort
-	open
-	save
-	save_as
-	import
-	export
-	options
-	help
-	quit
+	
+	| add
+	| edit
+	| delete
+	| display
+	| display_mail
+	| sort
+	| open
+	| save
+	| save_as
+	| import
+	| export
+	| options
+	| help
+	| quit
 
 	VALID FLAGS (used with keywords edit, delete, display, sort):
 	NOTE all flags must be followed by a single argument in quotes (eg: -a "123 Easy St"; -fn "Kevin").
-	-fn (first name)
-	-ln (last name)
-	-a (address)
-	-a2 (address line 2)
-	-c (city)
-	-s (state)
-	-z (ZIP Code)
-	-e (email)
+	
+	| -fn (first name)
+	| -ln (last name)
+	| -a (address)
+	| -a2 (address line 2)
+	| -c (city)
+	| -s (state)
+	| -z (ZIP Code)
+	| -e (email)
 
 	"""
 
@@ -162,16 +164,6 @@ class CommandLineInterface(Cmd):
 		self.addressbook = AddressBook()
 		self.current_book_filename = ""
 		Cmd.__init__(self, *args, **kwargs)
-
-	def do_prepop_book(self, line):
-		# TODO this is for testing, should be removed for final product
-		a = Contact()
-		a.testing('Super', 'Man', '10 a st', 'Eugene', 'OR', '97401', '(541) 555-1234', 'Super@man.com', 'apt#1')
-		b = Contact()
-		b.testing('Derek', 'Zoolander', '20 b st', 'Eugene', 'OR', '97402', '(541) 555-2559', 'malemodel@ballz.com', 'apt#2')
-		c = Contact()
-		c.testing('Jason', 'Dines', '30 c st', 'Eugene', 'OR', '97403', '(541) 911-3232', 'bro@uoregon.edu', 'apt#3')
-		self.addressbook.add([a, b, c])
 
 	def do_add(self, line):
 		"""
@@ -517,8 +509,9 @@ class CommandLineInterface(Cmd):
 		"""
 		Import a contacts list from a tsv file and add the contacts to the current book.
 		The format of the file is as follows:
-		Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
-		followed by a list of contacts with the same format.
+		
+		| Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+		| followed by a list of contacts with the same format.
 		"""
 		file_name = raw_input("Please give the name/path of the file from which you want to import contacts (or leave blank to cancel): ")
 
@@ -538,8 +531,9 @@ class CommandLineInterface(Cmd):
 		"""
 		Export the contacts of the current AddressBook to a tsv file.
 		The format of the file is as follows:
-		Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
-		followed by a list of contacts with the same format.
+		
+		| Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
+		| followed by a list of contacts with the same format.
 		"""	
 		file_name = raw_input("Please give the name of the file to which you want to export contacts (or leave blank to cancel): ")
 			

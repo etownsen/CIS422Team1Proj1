@@ -1,0 +1,281 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>gui module &mdash; Blue Book 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/pydoctheme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="Blue Book 1.0 documentation" href="index.html" />
+    <link rel="up" title="src" href="modules.html" />
+    <link rel="prev" title="cli module" href="cli.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
+          <li><a href="modules.html" accesskey="U">src</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-gui">
+<span id="gui-module"></span><h1>gui module<a class="headerlink" href="#module-gui" title="Permalink to this headline">¶</a></h1>
+<p>Graphical-User Interface module.</p>
+<p>For simple Address Book applet - Project 1 -
+CIS 422, W&#8216;14, University of Oregon</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Sarah Yablok &lt;<a class="reference external" href="mailto:sarahy&#37;&#52;&#48;cs&#46;uoregon&#46;edu">sarahy<span>&#64;</span>cs<span>&#46;</span>uoregon<span>&#46;</span>edu</a>&gt;</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="gui.GUI">
+<em class="property">class </em><tt class="descclassname">gui.</tt><tt class="descname">GUI</tt><big>(</big><em>parent</em><big>)</big><a class="headerlink" href="#gui.GUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">Tkinter.Frame</span></tt></p>
+<p>Main class which represents our parent window for the GUI.</p>
+<dl class="method">
+<dt id="gui.GUI.addEntry">
+<tt class="descname">addEntry</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.addEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all of the fields entered by the user in the toplevel window
+Add the new contact object to the address book and update the canvas.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gui.GUI.addressbook">
+<tt class="descname">addressbook</tt><em class="property"> = None</em><a class="headerlink" href="#gui.GUI.addressbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>for i in range (0, 5):
+new_contact = Contact()
+setattr(new_contact, &#8216;lname&#8217;, &#8220;Yablok&#8221; + str(i))
+self.addressbook.add(new_contact)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.boxClicked">
+<tt class="descname">boxClicked</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#gui.GUI.boxClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give the rectangle the &#8216;select&#8217; state when clicked, and the highlight properties</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.clickAdd">
+<tt class="descname">clickAdd</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.clickAdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add an entry to the address book. Creates a new top level window with inputs, and refers
+to the addEntry function to add the new contact object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.clickDelete">
+<tt class="descname">clickDelete</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.clickDelete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete a contact from the address book, prompt a confirmation box which
+reviews the contact information, and proceeds to delete the entry from
+the addressbook, and update the Canvas</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.clickEdit">
+<tt class="descname">clickEdit</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.clickEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit an existing entry in the address book. Creates a new top level window with
+inputs which automatically gets the existing fields from the contact selected by the user.
+It refers to the editEntry() function to make the edits in to the actual contact in the addressbook.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.clickSearch">
+<tt class="descname">clickSearch</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.clickSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>General search for all of the fields and all of the contacts in the
+address book. It will look for exact matches in fields. For example search
+will accurately find &#8216;123 Easy St&#8217; but not just &#8216;Easy St&#8217;. (Needs full search
+field.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close an  address book. while closing the old one Use the import function to get the new file.
+Update the Canvas with the new book.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.editEntry">
+<tt class="descname">editEntry</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.editEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Edit the entry id in self.tempID. Update all of the fields, and update the
+Canvas to reflect these changes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.export">
+<tt class="descname">export</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Export the current address book to a .tsv file. Prompt the user to select a file,
+update the Canvas with the imported addressbook</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.fill_book">
+<tt class="descname">fill_book</tt><big>(</big><em>subset</em><big>)</big><a class="headerlink" href="#gui.GUI.fill_book" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill the Canvas with the info from adresses from the subset provided.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.get_tagged_box">
+<tt class="descname">get_tagged_box</tt><big>(</big><em>tag</em><big>)</big><a class="headerlink" href="#gui.GUI.get_tagged_box" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search through Canvas objects by tags, return the rectangle with the given tag</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.imp">
+<tt class="descname">imp</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.imp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Import a new address from a .tsv file. Prompt the user to select a file,
+update the Canvas with the imported addressbook</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.initUI">
+<tt class="descname">initUI</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.initUI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup the window and display it</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.new">
+<tt class="descname">new</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new blank address book, ask to save before creating new book.
+Update the Canvas with the new book.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.open">
+<tt class="descname">open</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a new address book. while closing the old one Use the import function to get the new file.
+Update the Canvas with the new book.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.save">
+<tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.save" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.sort">
+<tt class="descname">sort</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.sort" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort the addresses by last name. This search function only works
+on the full addressbook, not a subset, sort before searching.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the canvas once a change has been made to the addressbook,
+to display changes in the addressbook we delete all entries and and
+re-fill the canvas via the fill_book() function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.updateSearchState">
+<tt class="descname">updateSearchState</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.updateSearchState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Special update function which uses a subset of the full address
+book - the self.searchState which is the current search results.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="gui.combine_funcs">
+<tt class="descclassname">gui.</tt><tt class="descname">combine_funcs</tt><big>(</big><em>*funcs</em><big>)</big><a class="headerlink" href="#gui.combine_funcs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple function which takes two function commands, and combines their
+actions, one after another. (Used for closing toplevel window after adding
+or editing a contact.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="gui.main">
+<tt class="descclassname">gui.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cli.html"
+                        title="previous chapter">cli module</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/gui.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             >previous</a> |</li>
+        <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
+          <li><a href="modules.html" >src</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Team Neo.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.1.
+    </div>
+  </body>
+</html>

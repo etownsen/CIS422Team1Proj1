@@ -26,7 +26,7 @@
     <link rel="top" title="Blue Book 1.0 documentation" href="index.html" />
     <link rel="up" title="src" href="modules.html" />
     <link rel="next" title="validate module" href="validate.html" />
-    <link rel="prev" title="cli module" href="cli.html" /> 
+    <link rel="prev" title="addressbook module" href="addressbook.html" /> 
   </head>
   <body>
     <div class="related">
@@ -42,7 +42,7 @@
           <a href="validate.html" title="validate module"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="cli.html" title="cli module"
+          <a href="addressbook.html" title="addressbook module"
              accesskey="P">previous</a> |</li>
         <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
           <li><a href="modules.html" accesskey="U">src</a> &raquo;</li> 
@@ -57,7 +57,7 @@
   <div class="section" id="module-utils">
 <span id="utils-module"></span><h1>utils module<a class="headerlink" href="#module-utils" title="Permalink to this headline">¶</a></h1>
 <p>Utilities Module.</p>
-<p>For simple Address Book applet - Project 1 - 
+<p>For simple Address Book applet - Project 1 -
 CIS 422, W&#8216;14, University of Oregon.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -68,16 +68,31 @@ CIS 422, W&#8216;14, University of Oregon.</p>
 </tbody>
 </table>
 <dl class="function">
-<dt id="utils.open_ab">
-<tt class="descclassname">utils.</tt><tt class="descname">open_ab</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#utils.open_ab" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open an address book file, returning an AddressBook object.
-Raises IOError when file is not found.</p>
+<dt id="utils.abbreviate_state">
+<tt class="descclassname">utils.</tt><tt class="descname">abbreviate_state</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#utils.abbreviate_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an abbreviation of the given state or an empty string
+if it does not exist.</p>
+<div class="line-block">
+<div class="line">Raises KeyError if key does not exist.</div>
+</div>
 </dd></dl>
 
 <dl class="function">
-<dt id="utils.save_ab">
-<tt class="descclassname">utils.</tt><tt class="descname">save_ab</tt><big>(</big><em>ab</em>, <em>file_name</em><big>)</big><a class="headerlink" href="#utils.save_ab" title="Permalink to this definition">¶</a></dt>
+<dt id="utils.open_addressbook">
+<tt class="descclassname">utils.</tt><tt class="descname">open_addressbook</tt><big>(</big><em>file_name</em><big>)</big><a class="headerlink" href="#utils.open_addressbook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open an address book file, returning an AddressBook object.</p>
+<div class="line-block">
+<div class="line">Raises IOError if file is not found or has no read permission.</div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="utils.save_addressbook">
+<tt class="descclassname">utils.</tt><tt class="descname">save_addressbook</tt><big>(</big><em>addressbook</em>, <em>file_name</em><big>)</big><a class="headerlink" href="#utils.save_addressbook" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an AddressBook object to a file.</p>
+<div class="line-block">
+<div class="line">Raises IOError if file exist and has no write permission.</div>
+</div>
 </dd></dl>
 
 </div>
@@ -89,8 +104,8 @@ Raises IOError when file is not found.</p>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
   <h4>Previous topic</h4>
-  <p class="topless"><a href="cli.html"
-                        title="previous chapter">cli module</a></p>
+  <p class="topless"><a href="addressbook.html"
+                        title="previous chapter">addressbook module</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="validate.html"
                         title="next chapter">validate module</a></p>
@@ -129,7 +144,7 @@ Raises IOError when file is not found.</p>
           <a href="validate.html" title="validate module"
              >next</a> |</li>
         <li class="right" >
-          <a href="cli.html" title="cli module"
+          <a href="addressbook.html" title="addressbook module"
              >previous</a> |</li>
         <li><a href="index.html">Blue Book 1.0 documentation</a> &raquo;</li>
           <li><a href="modules.html" >src</a> &raquo;</li> 

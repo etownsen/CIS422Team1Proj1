@@ -5,6 +5,7 @@ src
    :maxdepth: 4
 
    addressbook
-   cli
    utils
    validate
+   cli
+   gui

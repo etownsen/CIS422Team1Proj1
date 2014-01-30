@@ -115,7 +115,8 @@ def validate_email(email):
 def validate_phone(phone):
     """
     Match a 10 digits phone number in one of the following formats:
-    1112223333 or (111)222-3333 or 111-222-3333.
+    
+    | 1112223333 or (111)222-3333 or 111-222-3333.
     """
     if phone==None: return False, ""
     valid = re.match('^$|^\D?(\d{3})\D?\D?(\d{3})\D?(\d{4})$', phone)

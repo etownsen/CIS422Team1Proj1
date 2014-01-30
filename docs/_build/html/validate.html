@@ -25,6 +25,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Blue Book 1.0 documentation" href="index.html" />
     <link rel="up" title="src" href="modules.html" />
+    <link rel="next" title="cli module" href="cli.html" />
     <link rel="prev" title="utils module" href="utils.html" /> 
   </head>
   <body>
@@ -37,6 +38,9 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="utils.html" title="utils module"
              accesskey="P">previous</a> |</li>
@@ -53,7 +57,7 @@
   <div class="section" id="module-validate">
 <span id="validate-module"></span><h1>validate module<a class="headerlink" href="#module-validate" title="Permalink to this headline">¶</a></h1>
 <p>Validate Module.</p>
-<p>For simple Address Book applet - Project 1 - 
+<p>For simple Address Book applet - Project 1 -
 CIS 422, W&#8216;14, University of Oregon.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -63,50 +67,63 @@ CIS 422, W&#8216;14, University of Oregon.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">author:</th><td class="field-body">Evan Townsend &lt;<a class="reference external" href="mailto:etownsen&#37;&#52;&#48;cs&#46;uoregon&#46;edu">etownsen<span>&#64;</span>cs<span>&#46;</span>uoregon<span>&#46;</span>edu</a>&gt;</td>
 </tr>
+<tr class="field-odd field"><th class="field-name">author:</th><td class="field-body">Kevin Beick &lt;<a class="reference external" href="mailto:kbeick&#37;&#52;&#48;uoregon&#46;edu">kbeick<span>&#64;</span>uoregon<span>&#46;</span>edu</a>&gt;</td>
+</tr>
 </tbody>
 </table>
 <dl class="function">
-<dt id="validate.main">
-<tt class="descclassname">validate.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#validate.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
 <dt id="validate.validate_address">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_address</tt><big>(</big><em>address</em><big>)</big><a class="headerlink" href="#validate.validate_address" title="Permalink to this definition">¶</a></dt>
-<dd><p>This matches everything as name, with the addition of numbers, dashes,
+<dd><p>Match everything as name, with the addition of numbers, dashes,
+colons, periods, pound signs, and spaces.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="validate.validate_address2">
+<tt class="descclassname">validate.</tt><tt class="descname">validate_address2</tt><big>(</big><em>address2</em><big>)</big><a class="headerlink" href="#validate.validate_address2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match everything as name, with the addition of numbers, dashes,
 colons, periods, pound signs, and spaces.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="validate.validate_city">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_city</tt><big>(</big><em>city</em><big>)</big><a class="headerlink" href="#validate.validate_city" title="Permalink to this definition">¶</a></dt>
-<dd><p>Pretty much the same as the names, but with spaces and numbers.
+<dd><p>Match everything as name, but with spaces and numbers.
 City name should start with letters.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="validate.validate_email">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_email</tt><big>(</big><em>email</em><big>)</big><a class="headerlink" href="#validate.validate_email" title="Permalink to this definition">¶</a></dt>
-<dd><p>Matches an email address.</p>
+<dd><p>Match an email address in the standard format <a class="reference external" href="mailto:name&#37;&#52;&#48;domain&#46;tld">name<span>&#64;</span>domain<span>&#46;</span>tld</a>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="validate.validate_name">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_name</tt><big>(</big><em>name</em><big>)</big><a class="headerlink" href="#validate.validate_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>This will match strings of at least 1 character consisting of the upper 
+<dd><p>Match strings of at least 1 character consisting of the upper
 and lower case alphabet as well as hyphens.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="validate.validate_phone">
+<tt class="descclassname">validate.</tt><tt class="descname">validate_phone</tt><big>(</big><em>phone</em><big>)</big><a class="headerlink" href="#validate.validate_phone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match a 10 digits phone number in one of the following formats:</p>
+<div class="line-block">
+<div class="line">1112223333 or (111)222-3333 or 111-222-3333.</div>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="validate.validate_state">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_state</tt><big>(</big><em>state</em><big>)</big><a class="headerlink" href="#validate.validate_state" title="Permalink to this definition">¶</a></dt>
-<dd><p>Full alphabet and spaces.</p>
+<dd><p>Match a state name or abbreviation.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="validate.validate_zip">
 <tt class="descclassname">validate.</tt><tt class="descname">validate_zip</tt><big>(</big><em>zipcode</em><big>)</big><a class="headerlink" href="#validate.validate_zip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Matches either 5 (97403) or 9 (97403-1234) zip codes.</p>
+<dd><p>Match either 5 (97403) or 9 (97403-1234) zip codes.</p>
 </dd></dl>
 
 </div>
@@ -120,6 +137,9 @@ and lower case alphabet as well as hyphens.</p>
   <h4>Previous topic</h4>
   <p class="topless"><a href="utils.html"
                         title="previous chapter">utils module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="cli.html"
+                        title="next chapter">cli module</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/validate.txt"
@@ -151,6 +171,9 @@ and lower case alphabet as well as hyphens.</p>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
+        <li class="right" >
+          <a href="cli.html" title="cli module"
+             >next</a> |</li>
         <li class="right" >
           <a href="utils.html" title="utils module"
              >previous</a> |</li>

@@ -1,3 +1,13 @@
+"""
+	Graphical-User Interface module.
+
+
+	For simple Address Book applet - Project 1 -
+	CIS 422, W'14, University of Oregon
+
+	:author: Sarah Yablok <sarahy@cs.uoregon.edu>
+"""
+
 import sys
 from cmd import Cmd
 
