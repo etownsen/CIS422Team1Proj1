@@ -10,6 +10,7 @@
 
 import csv
 import validate
+import utils
 from operator import itemgetter, attrgetter
 
 class Contact(object):
@@ -82,7 +83,7 @@ class Contact(object):
         """
         name = ' '.join([self.fname, self.lname])
         address = ' '.join([self.address, self.address2])
-        last = ' '.join([self.city, self.state, self.zipcode])
+        last = ' '.join([self.city, self.state.upper(), self.zipcode])
         info = {'name': name, 'delivery': address, 'last': last,
                 'phone': self.phone, 'email': self.email,
                 'address': self.address, 'second': self.address2}
@@ -126,9 +127,12 @@ class AddressBook(object):
         or a list of Contacts.
         """
         if type(entry) is list:
+            [utils.abbreviate_state(item.state) for item in entry]
             self.contacts += entry
             self.total += len(entry)
         else:
+            # Check what't in there first
+            entry.state = utils.abbreviate_state(entry.state)
             self.contacts.append(entry)
             self.total += 1
 
@@ -176,10 +180,14 @@ class AddressBook(object):
         Last<tab>Delivery<tab>Second<tab>Recipient<tab>Phone<NL>
         followed by a list of contacts with the same format.
         Raises IOError if file is not found or has no read permission.
+        Raises Error if file is not a standard tsv file.
         """
         with open(file_name, 'rb') as tsvfile:
             tsv_reader = csv.reader(tsvfile, delimiter='\t', quotechar='|')
             tsv_header = tsv_reader.next()
+            header = ['Last', 'Delivery', 'Second', 'Recipient']
+            if not set(tsv_header) & set(header):
+                raise error('Not a standard tsv')
             for line in tsv_reader:
                 fields = {key.lower() : value.title() for key, value in zip(tsv_header, line)}
                 entry = Contact()
