@@ -181,7 +181,7 @@ class AddressBook(object):
             tsv_reader = csv.reader(tsvfile, delimiter='\t', quotechar='|')
             tsv_header = tsv_reader.next()
             for line in tsv_reader:
-                fields = {key.lower() : value for key, value in zip(tsv_header, line)}
+                fields = {key.lower() : value.title() for key, value in zip(tsv_header, line)}
                 entry = Contact()
                 
                 if 'last' in fields and fields['last']:
@@ -212,16 +212,16 @@ class AddressBook(object):
                 if 'recipient' in fields and fields['recipient']:
                     recipient = fields['recipient'].split()
                     fname = recipient[0]
-                    if not validate.validate_name(fname)[0]:
-                        continue # If name is not valid, ignore entry
-                    entry.fname = fname
                     try: 
                         lname = recipient[1]
-                        if not validate.validate_name(lname)[0]:
-                            continue                            
-                        entry.lname = lname 
-                    except: 
-                        pass           
+                        fname = recipient[0]
+                        if validate.validate_name(fname)[0]:
+                            entry.fname = fname
+                    except:
+                        lname = recipient[0]   
+                    if not validate.validate_name(lname)[0]:
+                        continue
+                    entry.lname = lname
                 self.add(entry)
     
     def export_contacts(self, file_name):
