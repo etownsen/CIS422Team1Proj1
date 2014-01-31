@@ -75,9 +75,7 @@ class Contact(object):
     
     def merge_contact(self, other):
         """
-        **NOT FULLY TESTED.**
-        
-        | Merge Contacts that have the same first and last name. 
+        Merge Contacts that have the same first and last name. 
         """
         for attr in Contact.default_attrs:
             if not getattr(self, attr):
@@ -251,27 +249,24 @@ class AddressBook(object):
                         info['name'], info['phone']]
                 tsv_writer.writerow(info)
 
-    def merge_addressbook(self, address_book):
+    def merge_addressbook(self, address_book=None):
         """
-        **NOT FULLY TESTED.**
-        
-        | Combine two address books and merge Contacts that have the same
-        first and last name. 
+        Merge Contacts that have the same first and last name in the same
+        address book or combine two addess books and merge them.
         """
-        self.contacts += address_book.contacts
-        self.total += address_book.total
+        if address_book is not None:
+            self.contacts += address_book.contacts
+            self.total += address_book.total
         total = self.total
         i = j = 0
         while i < total:
-            j = i+1
+            j = i + 1
             while j < total:
-                # Two entries are the same if they have the same name
-                # so merge them together by combining the attributes 
                 if (self.contacts[i].fname == self.contacts[j].fname and
                 self.contacts[i].lname == self.contacts[j].lname):
                     self.contacts[i].merge_contact(self.contacts[j])
                     self.delete(j)
-                    total-=1
-                    j-=1
-                j+=1
+                    total -= 1
+                    j -= 1
+                j += 1
             i += 1    

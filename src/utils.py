@@ -28,7 +28,7 @@ def save_addressbook(addressbook, file_name):
     | Raises IOError if file exist and has no write permission.
     """
     with open(file_name, 'wb') as output:
-        pickle.dump(addressbook, output, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(addressbook, output)
 
 def abbreviate_state(state):
     """

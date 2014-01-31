@@ -70,7 +70,7 @@ CIS 422, W&#8216;14, University of Oregon</p>
 <p>Main class which represents our parent window for the GUI.</p>
 <dl class="method">
 <dt id="gui.GUI.addEntry">
-<tt class="descname">addEntry</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.addEntry" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">addEntry</tt><big>(</big><em>top</em><big>)</big><a class="headerlink" href="#gui.GUI.addEntry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get all of the fields entered by the user in the toplevel window
 Add the new contact object to the address book and update the canvas.</p>
 </dd></dl>
@@ -87,7 +87,8 @@ self.addressbook.add(new_contact)</p>
 <dl class="method">
 <dt id="gui.GUI.boxClicked">
 <tt class="descname">boxClicked</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#gui.GUI.boxClicked" title="Permalink to this definition">¶</a></dt>
-<dd><p>Give the rectangle the &#8216;select&#8217; state when clicked, and the highlight properties</p>
+<dd><p>Give the rectangle the &#8216;select&#8217; tag when clicked, and the highlight properties
+(outline and white background.</p>
 </dd></dl>
 
 <dl class="method">
@@ -131,7 +132,7 @@ Update the Canvas with the new book.</p>
 
 <dl class="method">
 <dt id="gui.GUI.editEntry">
-<tt class="descname">editEntry</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.editEntry" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">editEntry</tt><big>(</big><em>top</em><big>)</big><a class="headerlink" href="#gui.GUI.editEntry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Edit the entry id in self.tempID. Update all of the fields, and update the
 Canvas to reflect these changes.</p>
 </dd></dl>
@@ -146,13 +147,21 @@ update the Canvas with the imported addressbook</p>
 <dl class="method">
 <dt id="gui.GUI.fill_book">
 <tt class="descname">fill_book</tt><big>(</big><em>subset</em><big>)</big><a class="headerlink" href="#gui.GUI.fill_book" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fill the Canvas with the info from adresses from the subset provided.</p>
+<dd><p>Fill the Canvas with the info from adresses from the subset provided.
+for each entry add a rectangle to the canvas, and the associated address text within
+the rectangle. Bind these boxes to the boxClicked() function.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gui.GUI.get_tagged_box">
 <tt class="descname">get_tagged_box</tt><big>(</big><em>tag</em><big>)</big><a class="headerlink" href="#gui.GUI.get_tagged_box" title="Permalink to this definition">¶</a></dt>
-<dd><p>Search through Canvas objects by tags, return the rectangle with the given tag</p>
+<dd><p>Search through Canvas objects by tags, return the rectangle with the given tag.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.hover">
+<tt class="descname">hover</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#gui.GUI.hover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binding for when the user hovers over a rectangle. Changes the cursor.</p>
 </dd></dl>
 
 <dl class="method">
@@ -165,7 +174,14 @@ update the Canvas with the imported addressbook</p>
 <dl class="method">
 <dt id="gui.GUI.initUI">
 <tt class="descname">initUI</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.initUI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Setup the window and display it</p>
+<dd><p>Setup the window and display it.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.mailLabels">
+<tt class="descname">mailLabels</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.mailLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the contact information in a mailing label format.
+Update the canvas to display new format</p>
 </dd></dl>
 
 <dl class="method">
@@ -173,6 +189,19 @@ update the Canvas with the imported addressbook</p>
 <tt class="descname">new</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.new" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new blank address book, ask to save before creating new book.
 Update the Canvas with the new book.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.noMailLabels">
+<tt class="descname">noMailLabels</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.noMailLabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the contact information in the regular format.
+Update the canvas to display new format</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.no_hover">
+<tt class="descname">no_hover</tt><big>(</big><em>event</em><big>)</big><a class="headerlink" href="#gui.GUI.no_hover" title="Permalink to this definition">¶</a></dt>
+<dd><p>Binding for when the user stops hovering over a rectangle. Changes the cursor.</p>
 </dd></dl>
 
 <dl class="method">
@@ -185,11 +214,13 @@ Update the Canvas with the new book.</p>
 <dl class="method">
 <dt id="gui.GUI.save">
 <tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Automatic save function. If user has already saved the file. Refers to the
+export function.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="gui.GUI.sort">
-<tt class="descname">sort</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.sort" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sort</tt><big>(</big><em>att</em><big>)</big><a class="headerlink" href="#gui.GUI.sort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort the addresses by last name. This search function only works
 on the full addressbook, not a subset, sort before searching.</p>
 </dd></dl>
@@ -222,7 +253,9 @@ or editing a contact.</p>
 <dl class="function">
 <dt id="gui.main">
 <tt class="descclassname">gui.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.main" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create the GUI class with the root window. Configure the
+menu bars.</p>
+</dd></dl>
 
 </div>
 

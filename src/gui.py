@@ -43,7 +43,6 @@ def combine_funcs(*funcs):
 	return combined_func
 
 
-
 class GUI(Frame):
 	"""Main class which represents our parent window for the GUI."""
 	
@@ -126,13 +125,11 @@ class GUI(Frame):
 		self.initUI()
 
 
-
 	def initUI(self):
 		"""Setup the window and display it.""" 
 		self.parent.title("Blue Book")
 		self.pack(fill=BOTH, expand=1)
 
-	
 
 	def get_tagged_box(self, tag):
 		"""Search through Canvas objects by tags, return the rectangle with the given tag."""
@@ -142,7 +139,6 @@ class GUI(Frame):
 			id = self.canvas.find_withtag(self.canvas.itemcget(id,'text'))
 		return id;
  
-
 
 	def boxClicked(self, event):
 		"""Give the rectangle the 'select' tag when clicked, and the highlight properties
@@ -169,12 +165,10 @@ class GUI(Frame):
 		self.config(cursor="pointinghand")
 
 
-
 	def no_hover(self,event):
 		"""Binding for when the user stops hovering over a rectangle. Changes the cursor."""
 		id = self.get_tagged_box('current')
 		self.config(cursor="")
-
 
 
 	def fill_book(self, subset):
@@ -229,7 +223,6 @@ class GUI(Frame):
         	self.canvas.tag_bind('all', '<Any-Leave>', self.no_hover) #Check when box is not hovered over
 
 
-
 	def update(self):
 		"""Update the canvas once a change has been made to the addressbook,
 			to display changes in the addressbook we delete all entries and and
@@ -239,16 +232,14 @@ class GUI(Frame):
 		self.canvas.delete("all")
 		self.fill_book(self.addressbook.contacts)
 
-		
 
 	def updateSearchState(self):
 		"""Special update function which uses a subset of the full address
 			book - the self.searchState which is the current search results."""
 		self.canvas.delete("all")
 		self.fill_book(self.searchState)
-
-
 	
+
 	def sort(self, att):
 		"""Sort the addresses by last name. This search function only works
 			on the full addressbook, not a subset, sort before searching."""
@@ -260,7 +251,6 @@ class GUI(Frame):
 		attrs.extend(['lname', 'fname'])
 		self.addressbook.sort(attributes=attrs)
 		self.update()
-
 
 
 	def clickSearch(self):
@@ -276,7 +266,6 @@ class GUI(Frame):
 			results += self.addressbook.search(field[0], val)
 		self.searchState = results
 		self.updateSearchState()
-		
 
 
 	def clickAdd(self):
@@ -329,8 +318,7 @@ class GUI(Frame):
 		if(go):
 			self.addressbook.add(new_contact)
 			self.update()
-			top.destroy()
-		
+			top.destroy()		
 
 
 	def clickEdit(self):
@@ -385,8 +373,8 @@ class GUI(Frame):
 		ok = Button(toplevel, text="Submit", command=lambda: self.editEntry(toplevel))
 		can = Button(toplevel, text="Cancel", command=toplevel.destroy)
 		can.grid(row=count,column=2, sticky=W, padx=0, pady=10)
-		ok.grid(row=count,column=1, sticky=W, padx=0, pady=10)
-		
+		ok.grid(row=count,column=1, sticky=W, padx=0, pady=10)	
+
 
 	def editEntry(self, top):
 		"""Edit the entry id in self.tempID. Update all of the fields, and update the
@@ -428,8 +416,7 @@ class GUI(Frame):
 		else: 
 			tkMessageBox.showinfo("Input error", "The ID of the contact is invalid, please delete and re-add this contact")
 			return
-		
-
+	
 
 	def clickDelete(self):
 		"""Delete a contact from the address book, prompt a confirmation box which
@@ -479,7 +466,6 @@ class GUI(Frame):
 				self.updateSearchState()
 
 
-
 	def mailLabels(self):
 		"""View the contact information in a mailing label format.
 			Update the canvas to display new format"""
@@ -490,7 +476,6 @@ class GUI(Frame):
 			self.updateSearchState()
 
 
-
 	def noMailLabels(self):
 		"""View the contact information in the regular format.
 			Update the canvas to display new format"""
@@ -499,60 +484,61 @@ class GUI(Frame):
 			self.update()
 		else:
 			self.updateSearchState()
-			
-			
+
 
 	def new(self):
 		"""Create a new blank address book, ask to save before creating new book.
 			Update the Canvas with the new book."""
 		self.tempFile = None
 		if tkMessageBox.askyesno("New Address Book", "Do you want to save your current file first?"):
-			self.export()
+			self.save()
 		self.addressbook.contacts = []
 		self.addressbook.total = 0
 		self.update()
+	
 
-
-			
 	def open(self):
-		"""Open a new address book. while closing the old one Use the import function to get the new file.
-			Update the Canvas with the new book."""
-		self.tempFile = None
-		if tkMessageBox.askyesno("Open Address Book", "Do you want to save your current file first?"):
-			self.export()
-		self.addressbook.contacts = []
-		self.addressbook.total = 0
-		self.update()
-		self.imp()
+		"""Open a new address book and prompt the user to save changes."""
+		if self.addressbook.contacts != []: 
+			if tkMessageBox.askyesno("Open Address Book", "Do you want to save your current file first?"):
+				self.save()
+		dlg = tkFileDialog.Open(self)
+		fl = dlg.show()
 
+		if fl != '':
+			self.addressbook = utils.open_addressbook(fl)
+			self.tempFile = fl
+			self.update()
 
 
 	def close(self):
-		"""Close an  address book. while closing the old one Use the import function to get the new file.
-			Update the Canvas with the new book."""
-		self.tempFile = None
+		"""Close an address book and prompt the user to save changes. If no address book is open,
+		quit the program"""
+		if self.addressbook.contacts == []: 
+			root.quit()
+			return
 		if tkMessageBox.askyesno("Close Address Book", "Do you want to save your current file first?"):
-			self.export()
+			self.save()
+		self.tempFile = None
 		self.addressbook.contacts = []
 		self.addressbook.total = 0
 		self.update()
-
 
 
 	def imp(self):
 		"""Import a new address from a .tsv file. Prompt the user to select a file,
 			update the Canvas with the imported addressbook"""	
-		self.tempFile = None
 		ftypes = [('TSV files', '*.tsv'), ('All files', '*')]
 		dlg = tkFileDialog.Open(self, filetypes = ftypes)
 		fl = dlg.show()
-
 		if fl != '':
 			self.addressbook.import_contacts(fl)
+			if tkMessageBox.askyesno("Import Addresses", 
+				"Do you want to merge addresses with the same first and last name?"):
+				self.addressbook.merge_addressbook()
 			self.update()
+	
 
-
-			
 	def export(self):
 		"""Export the current address book to a .tsv file. Prompt the user to select a file,
 		update the Canvas with the imported addressbook"""
@@ -563,34 +549,54 @@ class GUI(Frame):
 		self.tempFile = f.name
 		self.addressbook.export_contacts(f.name)
 
+
 	def save(self):
-		"""Automatic save function. If user has already saved the file. Refers to the
-			export function."""
+		"""Save an address book to the disk."""
 		if (self.tempFile is None):
-			self.export()
+		    f = tkFileDialog.asksaveasfile()
+		    if f != None and self.addressbook != None:
+		    	utils.save_addressbook(self.addressbook, f.name)
+		    	self.tempFile = f.name
 		else:
-			self.addressbook.export_contacts(self.tempFile)
+			utils.save_addressbook(self.addressbook, self.tempFile)
+
+
+	def save_as(self):
+		"""Save an address book to the disk prompting for a file name."""
+		f = tkFileDialog.asksaveasfile()
+		if f != None and self.addressbook != None:
+		    utils.save_addressbook(self.addressbook, f.name)
+
+
+	def quit(self):
+		self.close()
+		root.quit()
+
 
 def main():
 	"""Create the GUI class with the root window. Configure the
 		menu bars."""
 	root.geometry("250x150+300+300")
+
 	app = GUI(root)
 
 	menubar = Menu(root)
 	
+	# Close button 
+	root.protocol('WM_DELETE_WINDOW', app.quit)
+
 	# File Menu
 	filemenu = Menu(menubar, tearoff=0)
 	filemenu.add_command(label="New", command=app.new)
 	filemenu.add_command(label="Open", command=app.open)
 	filemenu.add_command(label="Close", command=app.close)
 	filemenu.add_command(label="Save", command=app.save)
-	filemenu.add_command(label="Save As...", command=app.export)
+	filemenu.add_command(label="Save As...", command=app.save_as)
 	filemenu.add_separator()
 	filemenu.add_command(label="Import", command=app.imp)
 	filemenu.add_command(label="Export", command=app.export)
 	filemenu.add_separator()
-	filemenu.add_command(label="Quit", command=root.quit)
+	filemenu.add_command(label="Quit", command=app.quit)
 	menubar.add_cascade(label="File", menu=filemenu)
 	
 	# Edit Menu
