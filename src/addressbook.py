@@ -252,7 +252,7 @@ class AddressBook(object):
     def merge_addressbook(self, address_book=None):
         """
         Merge Contacts that have the same first and last name in the same
-        address book or combine two addess books and merge them.
+        address book or combine two address books and merge them.
         """
         if address_book is not None:
             self.contacts += address_book.contacts
