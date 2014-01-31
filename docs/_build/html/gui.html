@@ -126,8 +126,8 @@ field.</p>
 <dl class="method">
 <dt id="gui.GUI.close">
 <tt class="descname">close</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Close an  address book. while closing the old one Use the import function to get the new file.
-Update the Canvas with the new book.</p>
+<dd><p>Close an address book and prompt the user to save changes. If no address book is open,
+quit the program</p>
 </dd></dl>
 
 <dl class="method">
@@ -207,15 +207,25 @@ Update the canvas to display new format</p>
 <dl class="method">
 <dt id="gui.GUI.open">
 <tt class="descname">open</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.open" title="Permalink to this definition">¶</a></dt>
-<dd><p>Open a new address book. while closing the old one Use the import function to get the new file.
-Update the Canvas with the new book.</p>
+<dd><p>Open a new address book and prompt the user to save changes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.quit">
+<tt class="descname">quit</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.quit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quit the program but make sure to save changes first.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="gui.GUI.save">
 <tt class="descname">save</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Automatic save function. If user has already saved the file. Refers to the
-export function.</p>
+<dd><p>Save an address book to the disk.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gui.GUI.save_as">
+<tt class="descname">save_as</tt><big>(</big><big>)</big><a class="headerlink" href="#gui.GUI.save_as" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an address book to the disk prompting for a file name.</p>
 </dd></dl>
 
 <dl class="method">

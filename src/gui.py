@@ -569,6 +569,7 @@ class GUI(Frame):
 
 
 	def quit(self):
+		"""Quit the program but make sure to save changes first."""
 		self.close()
 		root.quit()
 
